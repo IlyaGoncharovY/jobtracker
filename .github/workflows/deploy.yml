@@ -1,3 +1,11 @@
+name: pnpm Example Workflow
+on:
+  push:
+    branches: [ 'master' ]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -8,7 +16,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Change directory to front
-        run: cd front
+        working-directory: front
+        run: |
+          echo "Moved to 'front' directory"
       - uses: pnpm/action-setup@v3
         with:
           version: 8
