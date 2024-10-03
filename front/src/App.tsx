@@ -11,7 +11,7 @@ function App() {
     tg.ready();
   }, []);
 
-  const onClose =() => {
+  const onClose = () => {
     tg.close();
   };
 
