@@ -1,7 +1,4 @@
-export type DataArrType = {
-    id: number,
-    name: string
-}
+import {DataArrType} from '../common/types';
 
 export const usersData: DataArrType[] = [
   {id: 1, name: 'Серёгин И.В.'},
