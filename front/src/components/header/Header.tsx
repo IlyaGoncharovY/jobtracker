@@ -1,19 +1,14 @@
 import {Button} from '@mui/joy';
 
+import {useTelegram} from '../../common/customHook';
 
 export const Header = () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const tg = window.Telegram.WebApp;
 
-
-  const onClose = () => {
-    tg.close();
-  };
+  const {tg, onCloseTMA} = useTelegram();
 
   return (
     <div>
-      <Button onClick={onClose}>Закрыть</Button>
+      <Button onClick={onCloseTMA}>Закрыть</Button>
       <span>
         {tg.initDataUnsafe?.user?.username}
       </span>
