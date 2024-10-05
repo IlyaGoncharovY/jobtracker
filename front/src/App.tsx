@@ -3,8 +3,8 @@ import {Button} from '@mui/joy';
 
 import s from './App.module.css';
 import {Nullable, ViewModeType} from './common/types';
-import {CommissionMode, RadioStationMode} from './components';
 import {stationData, stationForRadioData, usersData} from './data';
+import {CommissionMode, RadioStationMode, Header} from './components';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -29,16 +29,12 @@ export const App = () => {
     tg.ready();
   }, []);
 
-  const onClose = () => {
-    tg.close();
-  };
-
   const changeViewModeHandler = useCallback((currMode: ViewModeType) => {
     setViewMode(currMode);
-  },[]);
+  }, []);
 
   // Обработчик отправки данных для CommissionMode
-  const handleCommissionSubmit  = useCallback(() => {
+  const handleCommissionSubmit = useCallback(() => {
     const selectedEmployeeName = usersData
       .find(user =>
         user.id === Number(commissionEmployee))?.name || 'Неизвестный сотрудник';
@@ -74,9 +70,7 @@ export const App = () => {
 
   return (
     <div className={s.AppContainer}>
-      <Button onClick={onClose}>
-          закрыть
-      </Button>
+      <Header/>
       {viewMode === 'Радио-Станция' ?
         (<CommissionMode
           changeViewModeHandler={changeViewModeHandler}
@@ -102,7 +96,7 @@ export const App = () => {
         onClick={viewMode === 'Радио-Станция' ?
           handleCommissionSubmit :
           handleRadioSubmit}>
-          Отправить данные
+                Отправить данные
       </Button>
     </div>
   );
