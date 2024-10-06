@@ -28,9 +28,17 @@ export const CommissionMode = memo(() => {
   };
 
   const onSendData = useCallback(() => {
+    const selectedEmployeeName = usersData
+      .find(user =>
+        user.id === Number(commissionEmployee))?.name || 'Неизвестный сотрудник';
+
+    const selectedStationName = stationData
+      .find(station =>
+        station.id === Number(commissionStation))?.name || 'Неизвестная станция';
+
     const data = {
-      commissionEmployee,
-      commissionStation,
+      selectedEmployeeName,
+      selectedStationName,
       commissionDate,
       commissionRemarks,
     };

@@ -27,8 +27,12 @@ export const RadioStationMode = memo(() => {
   };
 
   const onSendData = useCallback(() => {
+    const selectedRadioStationName = stationForRadioData
+      .find(radio =>
+        radio.id === Number(radioStation))?.name || 'Неизвестная станция';
+
     const data = {
-      radioStation,
+      selectedRadioStationName,
       radioDate,
       radioSerialNumber,
     };
