@@ -1,11 +1,11 @@
-import {memo} from 'react';
+import {memo, useEffect} from 'react';
 
 import {Button, Input} from '@mui/joy';
 
 import {useNavigate} from 'react-router-dom';
 
 import {stationData, usersData} from '../../data';
-import {useSendDataForm} from '../../common/customHook';
+import {useSendDataForm, useTelegram} from '../../common/customHook';
 import {SelectContainer} from '../../common/components';
 import {DateInput} from '../../common/components/input/dateInput/DateInput.tsx';
 
@@ -18,12 +18,28 @@ export const CommissionMode = memo(() => {
     setViewMode,
   } = useSendDataForm();
 
+  const {tg} = useTelegram();
+
   const navigate = useNavigate();
 
   const navigateToFormHandler = () => {
     setViewMode('Радио-Станция');
     navigate('/RadioStationMode');
   };
+
+  useEffect(() => {
+    tg.MainButton.setParams({
+      text: 'Отправить данные',
+    });
+  }, [tg.MainButton]);
+
+  useEffect(() => {
+    if (!commissionEmployee || !commissionStation || !commissionDate || !commissionRemarks) {
+      tg.MainButton.hide();
+    } else {
+      tg.MainButton.show();
+    }
+  }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg.MainButton]);
 
   return (
     <>
