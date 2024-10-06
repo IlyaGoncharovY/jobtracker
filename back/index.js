@@ -32,18 +32,18 @@ bot.on('message', async (msg) => {
         try {
             const data = JSON.parse(msg?.web_app_data?.data);
 
-            await bot.sendMessage('Форма заполнена!');
-            if (data?.commissionEmployee) {
+            await bot.sendMessage(chatId, 'Форма заполнена!');
+            if (data?.selectedEmployeeName) {
                 await bot.sendMessage( chatId, 'Комиссионый завершён.');
-                await bot.sendMessage( chatId, `Станция: ${data?.commissionStation}`);
-                await bot.sendMessage( chatId, `Принимал участие: ${data?.commissionEmployee}`);
-                await bot.sendMessage( chatId, `Дата комиссионного: ${data?.commissionDate}`);
+                await bot.sendMessage( chatId, `Станция: ${data?.selectedStationName}`);
+                await bot.sendMessage( chatId, `Принимал участие: ${data?.selectedEmployeeName}`);
+                await bot.sendMessage( chatId, `Дата комиссионного: ${data?.formattedDate}`);
                 await bot.sendMessage( chatId, `Замечания: ${data?.commissionRemarks}`);
             }
 
-            if (data?.radioStation) {
-                await bot.sendMessage( chatId, `Станция размещения: ${data?.radioStation}`);
-                await bot.sendMessage( chatId, `Дата проверки: ${data?.radioDate}`);
+            if (data?.selectedRadioStationName) {
+                await bot.sendMessage( chatId, `Станция размещения: ${data?.selectedRadioStationName}`);
+                await bot.sendMessage( chatId, `Дата проверки: ${data?.formattedDate}`);
                 await bot.sendMessage( chatId, `Серийный номер: ${data?.radioSerialNumber}`);
             }
 

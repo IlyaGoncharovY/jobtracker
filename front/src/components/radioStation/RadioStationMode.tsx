@@ -27,13 +27,17 @@ export const RadioStationMode = memo(() => {
   };
 
   const onSendData = useCallback(() => {
+    if (!radioDate) return;
+
     const selectedRadioStationName = stationForRadioData
       .find(radio =>
         radio.id === Number(radioStation))?.name || 'Неизвестная станция';
 
+    const formattedDate = radioDate.split('-').reverse().join('-');
+
     const data = {
       selectedRadioStationName,
-      radioDate,
+      formattedDate,
       radioSerialNumber,
     };
     tg.sendData(JSON.stringify(data));

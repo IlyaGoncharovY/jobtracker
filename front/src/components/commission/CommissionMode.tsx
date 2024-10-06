@@ -28,6 +28,8 @@ export const CommissionMode = memo(() => {
   };
 
   const onSendData = useCallback(() => {
+    if (!commissionDate) return;
+
     const selectedEmployeeName = usersData
       .find(user =>
         user.id === Number(commissionEmployee))?.name || 'Неизвестный сотрудник';
@@ -36,10 +38,12 @@ export const CommissionMode = memo(() => {
       .find(station =>
         station.id === Number(commissionStation))?.name || 'Неизвестная станция';
 
+    const formattedDate = commissionDate.split('-').reverse().join('-');
+
     const data = {
       selectedEmployeeName,
       selectedStationName,
-      commissionDate,
+      formattedDate,
       commissionRemarks,
     };
     tg.sendData(JSON.stringify(data));
