@@ -1,4 +1,4 @@
-import {memo} from 'react';
+import {memo, useEffect} from 'react';
 
 import {Button, Input} from '@mui/joy';
 
@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {stationForRadioData} from '../../data';
 import {SelectContainer} from '../../common/components';
-import {useSendDataForm} from '../../common/customHook';
+import {useSendDataForm, useTelegram} from '../../common/customHook';
 import {DateInput} from '../../common/components/input/dateInput/DateInput.tsx';
 
 export const RadioStationMode = memo(() => {
@@ -17,12 +17,28 @@ export const RadioStationMode = memo(() => {
     setViewMode,
   } = useSendDataForm();
 
+  const {tg} = useTelegram();
+
   const navigate = useNavigate();
 
   const navigateToFormHandler = () => {
     setViewMode('Комиссионные');
     navigate('/');
   };
+
+  useEffect(() => {
+    tg.MainButton.setParams({
+      text: 'Отправить данные',
+    });
+  }, [tg.MainButton]);
+
+  useEffect(() => {
+    if (!radioStation || !radioDate || !radioSerialNumber) {
+      tg.MainButton.hide();
+    } else {
+      tg.MainButton.show();
+    }
+  }, [radioDate, radioSerialNumber, radioStation, tg.MainButton]);
 
   return (
     <>
