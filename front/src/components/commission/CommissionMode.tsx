@@ -1,75 +1,57 @@
-import {FC, memo} from 'react';
+import {memo} from 'react';
 
 import {Button, Input} from '@mui/joy';
 
-import {Nullable, ViewModeType} from '../../common/types';
+import {useNavigate} from 'react-router-dom';
+
 import {stationData, usersData} from '../../data';
+import {useSendDataForm} from '../../common/customHook';
 import {SelectContainer} from '../../common/components';
 import {DateInput} from '../../common/components/input/dateInput/DateInput.tsx';
 
-interface ICommissionMode {
-    changeViewModeHandler: (viewMode: ViewModeType) => void;
-    setSelectedEmployee: (value: Nullable<string>) => void;
-    setSelectedStation: (value: Nullable<string>) => void;
-    setSelectedDate: (value: Nullable<string>) => void;
-    setRemarks: (value: string) => void;
-    selectedEmployee: Nullable<string>;
-    selectedStation: Nullable<string>;
-    selectedDate: Nullable<string>;
-    remarks: string;
-}
+export const CommissionMode = memo(() => {
+  const {
+    commissionEmployee, setCommissionEmployee,
+    commissionStation, setCommissionStation,
+    commissionDate, setCommissionDate,
+    commissionRemarks, setCommissionRemarks,
+    setViewMode,
+  } = useSendDataForm();
 
-/**
- * Форма для отображения формы для заполнения данных по комиссионным осмотрам.
- * @param {ICommissionMode} props - props для "CommissionMode"
- * @param {(viewMode: ViewModeType) => void} props.changeViewModeHandler - функция для смены формы.
- * @param {(value: Nullable<string>) => void} props.setSelectedEmployee - функция для выбора сотрудника.
- * @param {(value: Nullable<string>) => void} props.setSelectedStation - функция для выбора станции.
- * @param {(value: Nullable<string>) => void} props.setSelectedDate - функция для выбора даты.
- * @param {(value: string) => void} props.setRemarks - функция для внесения замечаний.
- * @param {Nullable<string>} props.selectedEmployee - выбранный сотрудник.
- * @param {Nullable<string>) => void} props.selectedStation - выбранная станция.
- * @param {Nullable<string>} props.selectedDate - выбранная дата.
- * @param {string} props.remarks - внесённое замечание.
- */
-export const CommissionMode:FC<ICommissionMode> = memo(({
-  changeViewModeHandler,
-  setSelectedEmployee,
-  setSelectedStation,
-  setSelectedDate,
-  setRemarks,
-  selectedEmployee,
-  selectedStation,
-  selectedDate,
-  remarks,
-}:ICommissionMode) => {
+  const navigate = useNavigate();
+
+  const navigateToFormHandler = () => {
+    setViewMode('Радио-Станция');
+    navigate('/RadioStationMode');
+  };
+
   return (
     <>
       <SelectContainer
         placeholder={'Выберите сотруника'}
         dataArr={usersData}
-        selectedValue={selectedEmployee}
-        onChange={setSelectedEmployee}
+        selectedValue={commissionEmployee}
+        onChange={setCommissionEmployee}
       />
       <SelectContainer
         placeholder={'Выберите станцию'}
         dataArr={stationData}
-        selectedValue={selectedStation}
-        onChange={setSelectedStation}
+        selectedValue={commissionStation}
+        onChange={setCommissionStation}
       />
       <DateInput
-        selectedDate={selectedDate}
-        onChange={setSelectedDate}
+        selectedDate={commissionDate}
+        onChange={setCommissionDate}
       />
       <Input
         style={{ width: '80%' }}
         size="lg"
         placeholder="Введите замечания"
-        value={remarks}
-        onChange={(e) => setRemarks(e.target.value)}
+        value={commissionRemarks}
+        onChange={(e) => setCommissionRemarks(e.currentTarget.value)}
       />
       <div>
-        <Button onClick={() => changeViewModeHandler('Комиссионные')}>
+        <Button onClick={navigateToFormHandler}>
          Радио-Станция
         </Button>
       </div>

@@ -1,63 +1,50 @@
-import {FC, memo} from 'react';
+import {memo} from 'react';
 
 import {Button, Input} from '@mui/joy';
 
+import {useNavigate} from 'react-router-dom';
+
 import {stationForRadioData} from '../../data';
 import {SelectContainer} from '../../common/components';
-import {Nullable, ViewModeType} from '../../common/types';
+import {useSendDataForm} from '../../common/customHook';
 import {DateInput} from '../../common/components/input/dateInput/DateInput.tsx';
 
-interface IRadioStationMode {
-    changeViewModeHandler: (viewMode: ViewModeType) => void
-    setSelectedStation: (value: Nullable<string>) => void;
-    setSelectedDate: (value: Nullable<string>) => void;
-    setSerialNumber: (value: string) => void;
-    selectedStation: Nullable<string>;
-    selectedDate: Nullable<string>;
-    serialNumber: string;
-}
+export const RadioStationMode = memo(() => {
+  const {
+    radioStation, setRadioStation,
+    radioDate, setRadioDate,
+    radioSerialNumber, setRadioSerialNumber,
+    setViewMode,
+  } = useSendDataForm();
 
-/**
- * Форма для отображения формы для заполнения данных по замене радиостанций.
- * @param {IRadioStationMode} props - props для "RadioStationMode"
- * @param {(viewMode: ViewModeType) => void} props.changeViewModeHandler - функция для смены формы.
- * @param {(value: Nullable<string>) => void} props.setSelectedStation - функция для выбора станции.
- * @param {(value: Nullable<string>) => void} props.setSelectedDate - функция для выбора даты.
- * @param {(value: string) => void} props.setSerialNumber - функция для внесения серийного номера.
- * @param {Nullable<string>} props.selectedStation - выбранная станция.
- * @param {Nullable<string>} props.selectedDate - выбранная дата.
- * @param {string} props.serialNumber - внесённый серийный номер.
- */
-export const RadioStationMode:FC<IRadioStationMode> = memo(({
-  changeViewModeHandler,
-  setSelectedStation,
-  setSelectedDate,
-  setSerialNumber,
-  selectedStation,
-  selectedDate,
-  serialNumber,
-}:IRadioStationMode) => {
+  const navigate = useNavigate();
+
+  const navigateToFormHandler = () => {
+    setViewMode('Комиссионные');
+    navigate('/');
+  };
+
   return (
     <>
       <SelectContainer
         placeholder={'Выберите станцию'}
         dataArr={stationForRadioData}
-        selectedValue={selectedStation}
-        onChange={setSelectedStation}
+        selectedValue={radioStation}
+        onChange={setRadioStation}
       />
       <DateInput
-        selectedDate={selectedDate}
-        onChange={setSelectedDate}
+        selectedDate={radioDate}
+        onChange={setRadioDate}
       />
       <Input
         style={{ width: '80%' }}
         size="lg"
         placeholder="Серийный номер"
-        value={serialNumber}
-        onChange={(e) => setSerialNumber(e.currentTarget.value)}
+        value={radioSerialNumber}
+        onChange={(e) => setRadioSerialNumber(e.currentTarget.value)}
       />
       <div>
-        <Button onClick={() => changeViewModeHandler('Радио-Станция')}>
+        <Button onClick={navigateToFormHandler}>
             Комиссионные
         </Button>
       </div>

@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
 
-import {Nullable} from '../types';
+import {Nullable, ViewModeType} from '../types';
 import {stationData, stationForRadioData, usersData} from '../../data';
 
 /**
@@ -20,10 +20,14 @@ import {stationData, stationForRadioData, usersData} from '../../data';
  * @returns {(value: Nullable<string>) => void} setRadioDate - Функция для установки даты проверки радиостанции.
  * @returns {string} radioSerialNumber - Серийный номер радиостанции.
  * @returns {(value: string) => void} setRadioSerialNumber - Функция для установки серийного номера радиостанции.
+ * @returns {string} viewMode - флаг для определния на какой из форм находится пользователь.
+ * @returns {(value: ViewModeType) => void} setViewMode - Функция для установки формы.
  * @returns {() => void} handleCommissionSubmit - Функция для обработки отправки данных комиссии.
  * @returns {() => void} handleRadioSubmit - Функция для обработки отправки данных радиостанции.
  */
 export const useSendDataForm = () => {
+  // состояние для определения на какой форме находится пользователь
+  const [viewMode, setViewMode] = useState<ViewModeType>('Радио-Станция');
 
   // Состояния для CommissionMode
   const [commissionEmployee, setCommissionEmployee] = useState<Nullable<string>>(null);
@@ -86,6 +90,8 @@ export const useSendDataForm = () => {
     setRadioDate,
     radioSerialNumber,
     setRadioSerialNumber,
+    viewMode,
+    setViewMode,
     handleCommissionSubmit,
     handleRadioSubmit,
   };
