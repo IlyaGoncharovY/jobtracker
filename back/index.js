@@ -14,7 +14,7 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'Нажмите ниже "Заполнить форму, что бы отправить данные"', {
             reply_markup: {
                 keyboard: [
-                    [{text: 'Заполни форму', web_app: {url: webTMAUrl + '/'}}]
+                    [{text: 'Заполни форму', web_app: {url: webTMAUrl + '/RadioStationMode'}}]
                 ]
             }
         });
