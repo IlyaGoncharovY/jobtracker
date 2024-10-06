@@ -36,11 +36,11 @@ export const RadioStationMode = memo(() => {
   }, [radioDate, radioSerialNumber, radioStation, tg]);
 
   useEffect(() => {
-    tg.WebApp.onEvent('mainButtonClicked', onSendData);
+    tg.onEvent('mainButtonClicked', onSendData);
     return () => {
-      tg.WebApp.onEvent('mainButtonClicked', onSendData);
+      tg.offEvent('mainButtonClicked', onSendData);
     };
-  }, [onSendData, tg.WebApp]);
+  }, [onSendData, tg]);
 
   useEffect(() => {
     tg.MainButton.setParams({
