@@ -1,4 +1,4 @@
-import {memo, useEffect} from 'react';
+import {memo, useCallback, useEffect} from 'react';
 
 import {Button, Input} from '@mui/joy';
 
@@ -26,6 +26,23 @@ export const CommissionMode = memo(() => {
     setViewMode('Радио-Станция');
     navigate('/RadioStationMode');
   };
+
+  const onSendData = useCallback(() => {
+    const data = {
+      commissionEmployee,
+      commissionStation,
+      commissionDate,
+      commissionRemarks,
+    };
+    tg.sendData(JSON.stringify(data));
+  }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
+
+  useEffect(() => {
+    tg.WebApp.onEvent('mainButtonClicked', onSendData);
+    return () => {
+      tg.WebApp.onEvent('mainButtonClicked', onSendData);
+    };
+  }, [onSendData, tg.WebApp]);
 
   useEffect(() => {
     tg.MainButton.setParams({

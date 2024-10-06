@@ -19,12 +19,39 @@ bot.on('message', async (msg) => {
             }
         });
 
-       await bot.sendMessage(chatId, 'hello friend ! :)', {
-           reply_markup: {
-               inline_keyboard: [
-                   [{text: 'Заполни форму чат', web_app: {url: webTMAUrl + '/'}}]
-               ]
-           }
-       });
+        await bot.sendMessage(chatId, 'hello friend ! :)', {
+            reply_markup: {
+                inline_keyboard: [
+                    [{text: 'Заполни форму чат', web_app: {url: webTMAUrl + '/'}}]
+                ]
+            }
+        });
+    }
+
+    if (msg?.web_app_data?.data) {
+        try {
+            const data = JSON.parse(msg?.web_app_data?.data);
+
+            await bot.sendMessage('Форма заполнена!');
+            if (data?.commissionEmployee) {
+                await bot.sendMessage( chatId, 'Комиссионый завершён.');
+                await bot.sendMessage( chatId, `Станция: ${data?.commissionStation}`);
+                await bot.sendMessage( chatId, `Принимал участие: ${data?.commissionEmployee}`);
+                await bot.sendMessage( chatId, `Дата комиссионного: ${data?.commissionDate}`);
+                await bot.sendMessage( chatId, `Замечания: ${data?.commissionRemarks}`);
+            }
+
+            if (data?.radioStation) {
+                await bot.sendMessage( chatId, `Станция размещения: ${data?.radioStation}`);
+                await bot.sendMessage( chatId, `Дата проверки: ${data?.radioDate}`);
+                await bot.sendMessage( chatId, `Серийный номер: ${data?.radioSerialNumber}`);
+            }
+
+            setTimeout(async ()=> {
+                await bot.sendMessage( chatId, 'Ты молодец! Не забудь похвалить себя :)');
+            }, 2000)
+        } catch (e) {
+            console.log(e)
+        }
     }
 });
