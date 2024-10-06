@@ -3,10 +3,20 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
+const PORT = 8000;
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 
-const bot = new TelegramBot(token, {polling: true});
+const isProduction = process.env.NODE_ENV === 'production';
+const bot = new TelegramBot(token, isProduction ? { webHook: { port: PORT } } : { polling: true });
+
+if (isProduction) {
+    bot.setWebHook(`https://https://jobtracker-l44k.onrender.com/bot${token}`);
+}
+
+// const bot = new TelegramBot(token, {polling: true});
+// const bot = new TelegramBot(token, { webHook: { port: PORT } });
+// bot.setWebHook(`https://https://jobtracker-l44k.onrender.com/bot${token}`);
 
 const app = express();
 
@@ -62,8 +72,5 @@ bot.on('message', async (msg) => {
         }
     }
 });
-
-
-const PORT = 8000;
 
 app.listen(PORT, () => console.log(`server started on PORT: ${PORT}`));
