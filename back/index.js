@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
-const url = 'https://ilyagoncharovy.github.io/jobtracker/';
+const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 
 const bot = new TelegramBot(token, {polling: true});
 
@@ -14,7 +14,7 @@ bot.on('message', async (msg) => {
        await bot.sendMessage(chatId, 'hello friend ! :)', {
            reply_markup: {
                inline_keyboard: [
-                   [{text: 'Заполни форму', web_app: {url}}]
+                   [{text: 'Заполни форму', web_app: {url: webTMAUrl + '/'}}]
                ]
            }
        });
