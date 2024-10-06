@@ -8,7 +8,7 @@ import {useSendDataForm, useTelegram} from './common/customHook';
 
 export const App = () => {
 
-  const {tg} = useTelegram();
+  const {tg, onToggleButton} = useTelegram();
   const {
     commissionEmployee, setCommissionEmployee,
     commissionStation, setCommissionStation,
@@ -34,6 +34,7 @@ export const App = () => {
   return (
     <div className={s.AppContainer}>
       <Header/>
+      <Button onClick={onToggleButton}>тогл</Button>
       {viewMode === 'Радио-Станция' ?
         (<CommissionMode
           changeViewModeHandler={changeViewModeHandler}
