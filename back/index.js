@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const PORT = 8000;
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 
@@ -65,5 +64,6 @@ bot.on('message', async (msg) => {
         }
     }
 });
+const PORT = 8000;
 
 app.listen(PORT, () => console.log(`server started on PORT: ${PORT}`));
