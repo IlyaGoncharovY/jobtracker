@@ -7,9 +7,9 @@ const PORT = 8000;
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 
-// const bot = new TelegramBot(token, {polling: true});
-const bot = new TelegramBot(token, { webHook: { port: PORT } });
-bot.setWebHook(`https://jobtracker-l44k.onrender.com/bot${token}`);
+const bot = new TelegramBot(token, {polling: true});
+// const bot = new TelegramBot(token, { webHook: { port: PORT } });
+// bot.setWebHook(`https://jobtracker-l44k.onrender.com/bot${token}`);
 
 const app = express();
 
