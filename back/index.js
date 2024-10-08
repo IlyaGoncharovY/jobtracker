@@ -16,7 +16,7 @@ app.use(cors());
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
-    console.log('chatId start:' + chatId);
+    console.log('bot on started')
     if (text === '/start') {
         await bot.sendMessage(chatId, 'Нажмите ниже "Заполнить форму, что бы отправить данные"', {
             reply_markup: {
