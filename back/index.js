@@ -5,13 +5,20 @@ const cors = require('cors');
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
-
-const bot = new TelegramBot(token, {polling: true});
-
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+const webhookUrl = process.env.URL_SERVER;
+
+const bot = new TelegramBot(token);
+bot.setWebHook(webhookUrl);
+
+app.post('/telegram-webhook', (req, res) => {
+    bot.processUpdate(req.body);
+    res.sendStatus(200);
+});
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
