@@ -1,7 +1,6 @@
-import {useCallback, useState} from 'react';
+import {useState} from 'react';
 
-import {Nullable, ViewModeType} from '../types';
-import {stationData, stationForRadioData, usersData} from '../../data';
+import {Nullable} from '../types';
 
 /**
  * Хук для отправки данных с форм.
@@ -20,15 +19,8 @@ import {stationData, stationForRadioData, usersData} from '../../data';
  * @returns {(value: Nullable<string>) => void} setRadioDate - Функция для установки даты проверки радиостанции.
  * @returns {string} radioSerialNumber - Серийный номер радиостанции.
  * @returns {(value: string) => void} setRadioSerialNumber - Функция для установки серийного номера радиостанции.
- * @returns {string} viewMode - флаг для определния на какой из форм находится пользователь.
- * @returns {(value: ViewModeType) => void} setViewMode - Функция для установки формы.
- * @returns {() => void} handleCommissionSubmit - Функция для обработки отправки данных комиссии.
- * @returns {() => void} handleRadioSubmit - Функция для обработки отправки данных радиостанции.
  */
 export const useSendDataForm = () => {
-  // состояние для определения на какой форме находится пользователь
-  const [viewMode, setViewMode] = useState<ViewModeType>('Радио-Станция');
-
   // Состояния для CommissionMode
   const [commissionEmployee, setCommissionEmployee] = useState<Nullable<string>>(null);
   const [commissionStation, setCommissionStation] = useState<Nullable<string>>(null);
@@ -39,41 +31,6 @@ export const useSendDataForm = () => {
   const [radioStation, setRadioStation] = useState<Nullable<string>>(null);
   const [radioDate, setRadioDate] = useState<Nullable<string>>(null);
   const [radioSerialNumber, setRadioSerialNumber] = useState<string>('');
-
-  // Обработчик отправки данных для CommissionMode
-  const handleCommissionSubmit = useCallback(() => {
-    const selectedEmployeeName = usersData
-      .find(user =>
-        user.id === Number(commissionEmployee))?.name || 'Неизвестный сотрудник';
-    const selectedStationName = stationData
-      .find(station =>
-        station.id === Number(commissionStation))?.name || 'Неизвестная станция';
-
-    console.log('Selected Employee:', selectedEmployeeName);
-    console.log('Selected Station:', selectedStationName);
-    console.log('Selected Date:', commissionDate);
-    console.log('Remarks:', commissionRemarks);
-
-    setCommissionEmployee(null);
-    setCommissionStation(null);
-    setCommissionDate(null);
-    setCommissionRemarks('');
-  }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation]);
-
-  // Обработчик отправки данных для RadioStationMode
-  const handleRadioSubmit = useCallback(() => {
-    const selectedRadioStationName = stationForRadioData
-      .find(radio =>
-        radio.id === Number(radioStation))?.name || 'Неизвестная станция';
-
-    console.log('Radio - Selected Station:', selectedRadioStationName);
-    console.log('Radio - Selected Date:', radioDate);
-    console.log('Radio - Serial Number:', radioSerialNumber);
-
-    setRadioStation(null);
-    setRadioDate(null);
-    setRadioSerialNumber('');
-  }, [radioStation, radioDate, radioSerialNumber]);
 
   return {
     commissionEmployee,
@@ -90,9 +47,5 @@ export const useSendDataForm = () => {
     setRadioDate,
     radioSerialNumber,
     setRadioSerialNumber,
-    viewMode,
-    setViewMode,
-    handleCommissionSubmit,
-    handleRadioSubmit,
   };
 };

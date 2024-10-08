@@ -1,13 +1,8 @@
-import {memo, useCallback, useEffect} from 'react';
-
-import {Button, Input} from '@mui/joy';
-
-import {useNavigate} from 'react-router-dom';
+import {memo, useCallback} from 'react';
 
 import {stationData, usersData} from '../../data';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
-import {SelectContainer} from '../../common/components';
-import {DateInput} from '../../common/components/input/dateInput/DateInput.tsx';
+import {FormContainer} from '../../common/components';
 
 export const CommissionMode = memo(() => {
   const {
@@ -15,17 +10,9 @@ export const CommissionMode = memo(() => {
     commissionStation, setCommissionStation,
     commissionDate, setCommissionDate,
     commissionRemarks, setCommissionRemarks,
-    setViewMode,
   } = useSendDataForm();
 
   const {tg} = useTelegram();
-
-  const navigate = useNavigate();
-
-  const navigateToFormHandler = () => {
-    setViewMode('Радио-Станция');
-    navigate('/RadioStationMode');
-  };
 
   const onSendData = useCallback(() => {
     if (!commissionDate) return;
@@ -49,57 +36,24 @@ export const CommissionMode = memo(() => {
     tg.sendData(JSON.stringify(data));
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
-  useEffect(() => {
-    tg.onEvent('mainButtonClicked', onSendData);
-    return () => {
-      tg.offEvent('mainButtonClicked', onSendData);
-    };
-  }, [onSendData, tg]);
-
-  useEffect(() => {
-    tg.MainButton.setParams({
-      text: 'Отправить данные',
-    });
-  }, [tg.MainButton]);
-
-  useEffect(() => {
-    if (!commissionEmployee || !commissionStation || !commissionDate || !commissionRemarks) {
-      tg.MainButton.hide();
-    } else {
-      tg.MainButton.show();
-    }
-  }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg.MainButton]);
-
   return (
-    <>
-      <SelectContainer
-        placeholder={'Выберите сотруника'}
-        dataArr={usersData}
-        selectedValue={commissionEmployee}
-        onChange={setCommissionEmployee}
-      />
-      <SelectContainer
-        placeholder={'Выберите станцию'}
-        dataArr={stationData}
-        selectedValue={commissionStation}
-        onChange={setCommissionStation}
-      />
-      <DateInput
-        selectedDate={commissionDate}
-        onChange={setCommissionDate}
-      />
-      <Input
-        style={{ width: '80%' }}
-        size="lg"
-        placeholder="Введите замечания"
-        value={commissionRemarks}
-        onChange={(e) => setCommissionRemarks(e.currentTarget.value)}
-      />
-      <div>
-        <Button onClick={navigateToFormHandler}>
-         Радио-Станция
-        </Button>
-      </div>
-    </>
+    <FormContainer
+      onSendData={onSendData}
+      placeholderSelect={'Выберите сотруника'}
+      selectorArrDataFirst={usersData}
+      selectedValue={commissionEmployee}
+      onChangeSelect={setCommissionEmployee}
+      placeholderSelectSecond={'Выберите станцию'}
+      selectorArrDataSecond={stationData}
+      selectedValueSecond={commissionStation}
+      onChangeSelectSecond={setCommissionStation}
+      dateValue={commissionDate}
+      onChangeDate={setCommissionDate}
+      inputPlaceholder={'Введите замечания'}
+      inputValue={commissionRemarks}
+      onChangeInput={setCommissionRemarks}
+      buttonText={'Радио-Станция'}
+      navigateTo={'/RadioStationMode'}
+    />
   );
 });
