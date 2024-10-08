@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const webhookUrl = process.env.URL_SERVER;
+const webhookUrl = 'https://jobtracker-l44k.onrender.com';
 
 const bot = new TelegramBot(token);
 bot.setWebHook(webhookUrl);
