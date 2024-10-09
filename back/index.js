@@ -37,7 +37,7 @@ bot.on('message', async (msg) => {
             reply_markup: {
                 inline_keyboard: [
                     [{text: 'Заполни форму "комисионные"', web_app: {url: webTMAUrl}}],
-                    [{text: 'Заполни форму "радостанция"', web_app: {url: `${webTMAUrl}RadioStationMode`}}]
+                    [{text: 'Заполни форму "радостанция"', web_app: {url: `https://ilyagoncharovy.github.io/RadioStationMode`}}]
                 ]
             }
         });
