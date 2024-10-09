@@ -36,7 +36,8 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'hello friend ! :)', {
             reply_markup: {
                 inline_keyboard: [
-                    [{text: 'Заполни форму чат', web_app: {url: webTMAUrl}}]
+                    [{text: 'Заполни форму "комисионные"', web_app: {url: webTMAUrl}}],
+                    [{text: 'Заполни форму "радостанция"', web_app: {url: `${webTMAUrl}RadioStationMode`}}]
                 ]
             }
         });
