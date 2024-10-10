@@ -31,6 +31,7 @@ const commissionDataFormSchema = z.object({
 });
 
 app.post('/send-form-data', async (req, res) => {
+    console.log('post res')
     try {
         const body = commissionDataFormSchema.parse(req.body);
 
