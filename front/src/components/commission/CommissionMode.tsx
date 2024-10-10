@@ -1,10 +1,8 @@
 import {memo, useCallback} from 'react';
 
-import {Button} from '@mui/joy';
-
 import {stationData, usersData} from '../../data';
-import {useSendDataForm, useTelegram} from '../../common/customHook';
 import {FormContainer} from '../../common/components';
+import {useSendDataForm, useTelegram} from '../../common/customHook';
 
 export const CommissionMode = memo(() => {
   const {
@@ -80,7 +78,6 @@ export const CommissionMode = memo(() => {
         buttonText={'Радио-Станция'}
         navigateTo={'/RadioStationMode'}
       />
-      <Button onClick={onSendData}>+</Button>
     </div>
   );
 });
