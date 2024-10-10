@@ -59,25 +59,23 @@ export const CommissionMode = memo(() => {
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
   return (
-    <div>
-      <FormContainer
-        onSendData={onSendData}
-        placeholderSelect={'Выберите сотруника'}
-        selectorArrDataFirst={usersData}
-        selectedValue={commissionEmployee}
-        onChangeSelect={setCommissionEmployee}
-        placeholderSelectSecond={'Выберите станцию'}
-        selectorArrDataSecond={stationData}
-        selectedValueSecond={commissionStation}
-        onChangeSelectSecond={setCommissionStation}
-        dateValue={commissionDate}
-        onChangeDate={setCommissionDate}
-        inputPlaceholder={'Введите замечания'}
-        inputValue={commissionRemarks}
-        onChangeInput={setCommissionRemarks}
-        buttonText={'Радио-Станция'}
-        navigateTo={'/RadioStationMode'}
-      />
-    </div>
+    <FormContainer
+      onSendData={onSendData}
+      placeholderSelect={'Выберите сотруника'}
+      selectorArrDataFirst={usersData}
+      selectedValue={commissionEmployee}
+      onChangeSelect={setCommissionEmployee}
+      placeholderSelectSecond={'Выберите станцию'}
+      selectorArrDataSecond={stationData}
+      selectedValueSecond={commissionStation}
+      onChangeSelectSecond={setCommissionStation}
+      dateValue={commissionDate}
+      onChangeDate={setCommissionDate}
+      inputPlaceholder={'Введите замечания'}
+      inputValue={commissionRemarks}
+      onChangeInput={setCommissionRemarks}
+      buttonText={'Радио-Станция'}
+      navigateTo={'/RadioStationMode'}
+    />
   );
 });
