@@ -46,6 +46,8 @@ app.post('/send-form-data', async (req, res) => {
             requestBody: {
                values: [commissionsRows],
             },
+        }).catch(err => {
+            console.error('Ошибка отправки формы в гугл таблицы:', err.response?.data || err.message);
         })
         res.json({message: 'Данные добавлены'})
     } catch (e) {

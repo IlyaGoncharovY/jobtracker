@@ -35,7 +35,7 @@ export const CommissionMode = memo(() => {
     };
     tg.sendData(JSON.stringify(data));
 
-    await fetch('/send-form-data', {
+    await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
