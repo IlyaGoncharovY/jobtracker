@@ -40,7 +40,12 @@ export const CommissionMode = memo(() => {
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        dateCommission: formattedDate,
+        employeeName: selectedEmployeeName,
+        station: selectedStationName,
+        remarks: commissionRemarks,
+      }),
     });
 
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
