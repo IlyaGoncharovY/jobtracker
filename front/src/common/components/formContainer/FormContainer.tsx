@@ -91,7 +91,7 @@ export const FormContainer:FC<IFormContainer> = memo(({
   }, [tg.MainButton]);
 
   useEffect(() => {
-    if (!selectedValue || !selectedValueSecond || !dateValue || !inputValue) {
+    if (!selectedValue || !dateValue || !inputValue) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
