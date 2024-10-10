@@ -1,7 +1,10 @@
-const TelegramBot = require('node-telegram-bot-api');
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+import TelegramBot from 'node-telegram-bot-api';
+import dotenv from 'dotenv';
+import {z, ZodError} from 'zod';
+import express from 'express';
+import cors from 'cors';
+import sheets, {SHEET_ID} from './sheetClient.js';
+dotenv.config();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
@@ -18,6 +21,40 @@ bot.setWebHook(webhookUrl);
 app.post('/telegram-webhook', (req, res) => {
     bot.processUpdate(req.body);
     res.sendStatus(200);
+});
+
+const commissionDataFormSchema = z.object({
+    station: z.string(),
+    employeeName: z.string(),
+    dateCommission: z.string(),
+    remarks: z.string().min(2, {message: 'Если замечаний нет, напиши "Без замечаний"'})
+});
+
+app.post('/send-form-data', async (req, res) => {
+    try {
+        const body = commissionDataFormSchema.parse(req.body);
+
+        const commissionsRows = Object.values(body);
+        console.log(commissionsRows);
+
+        await sheets.spreadsheets.values.append({
+           spreadsheetId: SHEET_ID,
+            range: 'Комиссионные!A:D',
+            // range: 'Радио-станция!A2:C2',
+            insertDataOption: 'INSERT_ROWS',
+            valueInputOption: 'RAW',
+            requestBody: {
+               values: [commissionsRows],
+            },
+        })
+        res.json({message: 'Данные добавлены'})
+    } catch (e) {
+        if (e instanceof ZodError) {
+            res.status(400).json({e: e.message});
+        } else {
+            res.status(400).json({e});
+        }
+    }
 });
 
 bot.on('message', async (msg) => {

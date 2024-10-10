@@ -14,7 +14,7 @@ export const CommissionMode = memo(() => {
 
   const {tg} = useTelegram();
 
-  const onSendData = useCallback(() => {
+  const onSendData = useCallback(async () => {
     if (!commissionDate) return;
 
     const selectedEmployeeName = usersData
@@ -34,6 +34,15 @@ export const CommissionMode = memo(() => {
       commissionRemarks,
     };
     tg.sendData(JSON.stringify(data));
+
+    await fetch('/send-form-data', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
   return (
