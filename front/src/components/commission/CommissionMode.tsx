@@ -54,8 +54,8 @@ export const CommissionMode = memo(() => {
 
         console.log('Данные успешно добавлены в Google Sheets');
       })
-      .catch(err => {
-        console.log('Ошибка при отправке данных:', err);
+      .catch((err: Error) => {
+        console.log('Ошибка при отправке данных:', err.message);
       });
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
