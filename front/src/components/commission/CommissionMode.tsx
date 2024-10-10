@@ -33,21 +33,30 @@ export const CommissionMode = memo(() => {
       formattedDate,
       commissionRemarks,
     };
-    tg.sendData(JSON.stringify(data));
+    tg.sendData(JSON.stringify(data))
+      .then(async () => {
+        const response = await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            dateCommission: formattedDate,
+            employeeName: selectedEmployeeName,
+            station: selectedStationName,
+            remarks: commissionRemarks,
+          }),
+        });
 
-    await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        dateCommission: formattedDate,
-        employeeName: selectedEmployeeName,
-        station: selectedStationName,
-        remarks: commissionRemarks,
-      }),
-    });
+        if (!response.ok) {
+          throw new Error('Ошибка при добавлении данных в Google Sheets');
+        }
 
+        console.log('Данные успешно добавлены в Google Sheets');
+      })
+      .catch(err => {
+        console.log('Ошибка при отправке данных:', err);
+      });
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
   return (
