@@ -8,6 +8,7 @@ dotenv.config();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
+const webGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/1zsAZjXsQPDBvxJt1cGykvFtEB1gCKVPpFD8ckbhZtys/edit?gid=1582341699#gid=1582341699';
 const app = express();
 
 app.use(express.json());
@@ -170,8 +171,8 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'hello friend ! :)', {
             reply_markup: {
                 inline_keyboard: [
-                    [{text: 'Заполни форму "комисионные"', web_app: {url: webTMAUrl}}],
-                    [{text: 'Заполни форму "радостанция"', web_app: {url: webTMAUrl}}]
+                    [{text: 'Заполни форму для "комисионные/радио-станции"', web_app: {url: webTMAUrl}}],
+                    [{text: 'Посмотреть таблицу"', web_app: {url: webGoogleSheetUrl}}]
                 ]
             }
         });
