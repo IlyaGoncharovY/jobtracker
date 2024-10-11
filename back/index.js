@@ -64,6 +64,28 @@ bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
     console.log('bot on started')
+    if (msg?.web_app_data?.data) {
+        try {
+            const data = JSON.parse(msg?.web_app_data?.data);
+
+            await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    dateCommission: data.formattedDate,
+                    employeeName: data.selectedEmployeeName,
+                    station: data.selectedStationName,
+                    remarks: data.commissionRemarks,
+                }),
+            });
+
+            await bot.sendMessage(chatId, 'Форма отправлена и данные добавлены.');
+        } catch (e) {
+            console.log('Ошибка при отправке данных:', e);
+        }
+    }
     if (text === '/start') {
         await bot.sendMessage(chatId, 'Нажмите ниже "Заполнить форму, что бы отправить данные"', {
             reply_markup: {
