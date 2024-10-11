@@ -13,7 +13,7 @@ export const RadioStationMode = memo(() => {
 
   const {tg} = useTelegram();
 
-  const onSendData = useCallback(() => {
+  const onSendData = useCallback(async () => {
     if (!radioDate) return;
 
     const selectedRadioStationName = stationForRadioData
@@ -28,6 +28,27 @@ export const RadioStationMode = memo(() => {
       radioSerialNumber,
     };
     tg.sendData(JSON.stringify(data));
+    try {
+      const response = await fetch('https://jobtracker-l44k.onrender.com/send-form-data-rs', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          dateVerification: formattedDate,
+          station: selectedRadioStationName,
+          serialNumber: radioSerialNumber,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при добавлении данных в Google Sheets');
+      }
+
+      console.log('Данные успешно добавлены в Google Sheets');
+    } catch (err: any) {
+      console.log('Ошибка при отправке данных:', err.message);
+    }
   }, [radioDate, radioSerialNumber, radioStation, tg]);
 
   return (

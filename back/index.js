@@ -30,6 +30,12 @@ const commissionDataFormSchema = z.object({
     remarks: z.string().min(2, {message: 'Если замечаний нет, напиши "Без замечаний"'})
 });
 
+const verificationRSDataFormSchema = z.object({
+    dateVerification: z.string(),
+    station: z.string(),
+    serialNumber: z.string(),
+});
+
 app.post('/send-form-data', async (req, res) => {
     console.log('post res')
     try {
@@ -46,11 +52,43 @@ app.post('/send-form-data', async (req, res) => {
         await sheets.spreadsheets.values.append({
            spreadsheetId: SHEET_ID,
             range: 'Sheet1!A:D',
-            // range: 'Радио-станция!A2:C2',
             insertDataOption: 'INSERT_ROWS',
             valueInputOption: 'RAW',
             requestBody: {
                values: [commissionsRows],
+            },
+        }).catch(err => {
+            console.error('Ошибка отправки формы в гугл таблицы:', err.response?.data || err.message);
+        })
+        res.json({message: 'Данные добавлены'})
+    } catch (e) {
+        if (e instanceof ZodError) {
+            res.status(400).json({e: e.message});
+        } else {
+            res.status(400).json({e});
+        }
+    }
+});
+
+app.post('/send-form-data-rs', async (req, res) => {
+    console.log('post res')
+    try {
+        const body = verificationRSDataFormSchema.parse(req.body);
+
+        const radioStationRows = [
+            body.dateVerification,
+            body.station,
+            body.serialNumber,
+        ];
+        console.log(radioStationRows);
+
+        await sheets.spreadsheets.values.append({
+            spreadsheetId: SHEET_ID,
+            range: 'Sheet2!A:C',
+            insertDataOption: 'INSERT_ROWS',
+            valueInputOption: 'RAW',
+            requestBody: {
+                values: [radioStationRows],
             },
         }).catch(err => {
             console.error('Ошибка отправки формы в гугл таблицы:', err.response?.data || err.message);
@@ -72,21 +110,38 @@ bot.on('message', async (msg) => {
     if (msg?.web_app_data?.data) {
         try {
             const data = JSON.parse(msg?.web_app_data?.data);
+            // Если данные относятся к комисионным
+            if (data?.selectedEmployeeName) {
+                await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        dateCommission: data.formattedDate,
+                        employeeName: data.selectedEmployeeName,
+                        station: data.selectedStationName,
+                        remarks: data.commissionRemarks,
+                    }),
+                });
 
-            await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                    dateCommission: data.formattedDate,
-                    employeeName: data.selectedEmployeeName,
-                    station: data.selectedStationName,
-                    remarks: data.commissionRemarks,
-                }),
-            });
-
-            await bot.sendMessage(chatId, 'Форма отправлена и данные добавлены.');
+                await bot.sendMessage(chatId, 'Форма "Комиссионные" отправлена и данные добавлены.');
+            }
+            // Если данные относятся к радиостанции
+            if (data?.selectedRadioStationName) {
+                await fetch('https://jobtracker-l44k.onrender.com/send-form-data-rs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        dateVerification: data.formattedDate,
+                        station: data.selectedRadioStationName,
+                        serialNumber: data.radioSerialNumber,
+                    }),
+                });
+                await bot.sendMessage(chatId, 'Форма "Радиостанция" отправлена и данные добавлены.');
+            }
         } catch (e) {
             console.log('Ошибка при отправке данных:', e);
         }
