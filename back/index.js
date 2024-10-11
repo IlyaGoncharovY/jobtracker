@@ -35,7 +35,12 @@ app.post('/send-form-data', async (req, res) => {
     try {
         const body = commissionDataFormSchema.parse(req.body);
 
-        const commissionsRows = Object.values(body);
+        const commissionsRows = [
+            body.dateCommission,
+            body.employeeName,
+            body.station,
+            body.remarks
+        ];
         console.log(commissionsRows);
 
         await sheets.spreadsheets.values.append({
