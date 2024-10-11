@@ -40,7 +40,7 @@ app.post('/send-form-data', async (req, res) => {
 
         await sheets.spreadsheets.values.append({
            spreadsheetId: SHEET_ID,
-            range: 'Комиссионные!A:D',
+            range: 'Sheet1!A:D',
             // range: 'Радио-станция!A2:C2',
             insertDataOption: 'INSERT_ROWS',
             valueInputOption: 'RAW',
