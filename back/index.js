@@ -37,7 +37,7 @@ const verificationRSDataFormSchema = z.object({
 });
 
 app.post('/send-form-data', async (req, res) => {
-    console.log('post res')
+    console.log('post res commission')
     try {
         const body = commissionDataFormSchema.parse(req.body);
 
@@ -71,20 +71,25 @@ app.post('/send-form-data', async (req, res) => {
 });
 
 app.post('/send-form-data-rs', async (req, res) => {
-    console.log('post res')
+    console.log('post res radio station')
     try {
         const body = verificationRSDataFormSchema.parse(req.body);
+
+        const dateVerification = new Date(body.dateVerification);
+        const nextYearDate = new Date(dateVerification);
+        nextYearDate.setFullYear(dateVerification.getFullYear() + 1);
 
         const radioStationRows = [
             body.dateVerification,
             body.station,
             body.serialNumber,
+            nextYearDate.toISOString().split('T')[0],
         ];
         console.log(radioStationRows);
 
         await sheets.spreadsheets.values.append({
             spreadsheetId: SHEET_ID,
-            range: 'Sheet2!A:C',
+            range: 'Sheet2!A:D',
             insertDataOption: 'INSERT_ROWS',
             valueInputOption: 'RAW',
             requestBody: {
