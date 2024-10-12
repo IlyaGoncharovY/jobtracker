@@ -1,6 +1,7 @@
 import {memo, useCallback} from 'react';
 
 import {stationForRadioData} from '../../data';
+import {sendDataHelper} from '../../common/helpers';
 import {FormContainer} from '../../common/components';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
 
@@ -13,7 +14,7 @@ export const RadioStationMode = memo(() => {
 
   const {tg} = useTelegram();
 
-  const onSendData = useCallback(async () => {
+  const onSendData = useCallback((): void => {
     if (!radioDate) return;
 
     const selectedRadioStationName = stationForRadioData
@@ -22,33 +23,20 @@ export const RadioStationMode = memo(() => {
 
     const formattedDate = radioDate.split('-').reverse().join('-');
 
-    const data = {
+    const dataToSend = {
       selectedRadioStationName,
       formattedDate,
       radioSerialNumber,
     };
-    tg.sendData(JSON.stringify(data));
-    try {
-      const response = await fetch('https://jobtracker-l44k.onrender.com/send-form-data-rs', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          dateVerification: formattedDate,
-          station: selectedRadioStationName,
-          serialNumber: radioSerialNumber,
-        }),
-      });
 
-      if (!response.ok) {
-        throw new Error('Ошибка при добавлении данных в Google Sheets');
-      }
-
-      console.log('Данные успешно добавлены в Google Sheets');
-    } catch (err: any) {
-      console.log('Ошибка при отправке данных:', err.message);
-    }
+    sendDataHelper({
+      formattedDate,
+      stationName: selectedRadioStationName,
+      serialNumber: radioSerialNumber,
+      apiUrl: 'https://jobtracker-l44k.onrender.com/send-form-data-rs',
+      tg,
+      dataToSend,
+    });
   }, [radioDate, radioSerialNumber, radioStation, tg]);
 
   return (

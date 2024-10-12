@@ -1,6 +1,7 @@
 import {memo, useCallback} from 'react';
 
 import {stationData, usersData} from '../../data';
+import {sendDataHelper} from '../../common/helpers';
 import {FormContainer} from '../../common/components';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
 
@@ -14,7 +15,7 @@ export const CommissionMode = memo(() => {
 
   const {tg} = useTelegram();
 
-  const onSendData = useCallback(async () => {
+  const onSendData = useCallback((): void => {
     if (!commissionDate) return;
 
     const selectedEmployeeName = usersData
@@ -27,35 +28,22 @@ export const CommissionMode = memo(() => {
 
     const formattedDate = commissionDate.split('-').reverse().join('-');
 
-    const data = {
+    const dataToSend = {
       selectedEmployeeName,
       selectedStationName,
       formattedDate,
       commissionRemarks,
     };
-    tg.sendData(JSON.stringify(data));
-    try {
-      const response = await fetch('https://jobtracker-l44k.onrender.com/send-form-data', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          dateCommission: formattedDate,
-          employeeName: selectedEmployeeName,
-          station: selectedStationName,
-          remarks: commissionRemarks,
-        }),
-      });
 
-      if (!response.ok) {
-        throw new Error('Ошибка при добавлении данных в Google Sheets');
-      }
-
-      console.log('Данные успешно добавлены в Google Sheets');
-    } catch (err: any) {
-      console.log('Ошибка при отправке данных:', err.message);
-    }
+    sendDataHelper({
+      formattedDate,
+      stationName: selectedStationName,
+      employeeName: selectedEmployeeName,
+      remarks: commissionRemarks,
+      apiUrl: 'https://jobtracker-l44k.onrender.com/send-form-data',
+      tg,
+      dataToSend,
+    });
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
   return (
