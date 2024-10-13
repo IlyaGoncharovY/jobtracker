@@ -46,7 +46,7 @@ bot.on('message', async (msg) => {
                     station: data.selectedStationName,
                     remarks: data.commissionRemarks,
                 });
-                await bot.sendMessage(chatId, 'Форма "Комиссионные" отправлена и данные добавлены.');
+                await bot.sendMessage(chatId, '✅ Форма "Комиссионные" отправлена и данные добавлены.');
             }
 
             // Если данные относятся к радиостанции
@@ -56,7 +56,7 @@ bot.on('message', async (msg) => {
                     station: data.selectedRadioStationName,
                     serialNumber: data.radioSerialNumber,
                 });
-                await bot.sendMessage(chatId, 'Форма "Радиостанция" отправлена и данные добавлены.');
+                await bot.sendMessage(chatId, '✅ Форма "Радиостанция" отправлена и данные добавлены.');
             }
         } catch (e) {
             console.log('Ошибка при отправке данных:', e);
@@ -66,12 +66,13 @@ bot.on('message', async (msg) => {
         await bot.sendMessage(chatId, 'Нажмите ниже "Заполнить форму, что бы отправить данные"', {
             reply_markup: {
                 keyboard: [
-                    [{text: 'Заполни форму', web_app: {url: webTMAUrl}}]
+                    [{text: '➡️ Заполни форму', web_app: {url: webTMAUrl}}]
                 ]
             }
         });
 
-        await bot.sendMessage(chatId, 'hello friend ! :)', {
+        await bot.sendMessage(chatId, '🚀🚀🚀 Бот запущен на все 💯!' +
+            'Попробуй заполнить форму 🪪 или посмотри данные в табличке 📃', {
             reply_markup: {
                 inline_keyboard: [
                     [{text: 'Заполни форму для "комисионные/радио-станции"', web_app: {url: webTMAUrl}}],
@@ -94,7 +95,7 @@ bot.on('message', async (msg) => {
             }
 
             setTimeout(async ()=> {
-                await bot.sendMessage( chatId, 'Ты молодец! Не забудь похвалить себя :)');
+                await bot.sendMessage( chatId, '🔥🔥🔥 Ты молодец! Не забудь похвалить себя :)');
             }, 2000)
         } catch (e) {
             console.log(e)

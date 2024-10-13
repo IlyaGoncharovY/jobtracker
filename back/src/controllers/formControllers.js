@@ -24,6 +24,16 @@ export const handleVerificationRSForm = async (req, res) => {
     try {
         const body = verificationRSDataFormSchema.parse(req.body);
 
+        // Проверка валидности даты
+        const isValidDate = (dateStr) => {
+            const date = new Date(dateStr);
+            return !isNaN(date.getTime());
+        };
+
+        if (!isValidDate(body.dateVerification)) {
+            throw new Error('Некорректный формат даты');
+        }
+
         const dateVerification = new Date(body.dateVerification);
         const nextYearDate = new Date(dateVerification);
         nextYearDate.setFullYear(dateVerification.getFullYear() + 1);
