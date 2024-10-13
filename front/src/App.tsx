@@ -1,5 +1,4 @@
 import {useEffect} from 'react';
-import {Button} from '@mui/joy';
 
 import {Navigate, Route, Routes} from 'react-router-dom';
 
@@ -9,7 +8,7 @@ import {CommissionMode, Header, RadioStationMode} from './components';
 
 export const App = () => {
 
-  const {tg, onToggleButton} = useTelegram();
+  const {tg} = useTelegram();
 
   useEffect(() => {
     tg.ready();
@@ -18,7 +17,6 @@ export const App = () => {
   return (
     <div className={s.AppContainer}>
       <Header/>
-      <Button onClick={onToggleButton}>тогл</Button>
       <Routes>
         <Route path="/" element={<CommissionMode />} />
         <Route path="/RadioStationMode" element={<RadioStationMode />} />

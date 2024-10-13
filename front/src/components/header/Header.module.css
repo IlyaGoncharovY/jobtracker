@@ -1,0 +1,11 @@
+.headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    span {
+        font-weight: bold;
+        font-size: 16px
+    }
+}

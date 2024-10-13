@@ -1,17 +1,30 @@
-import {Button} from '@mui/joy';
+import {IconButton} from '@mui/joy';
+import ClearIcon from '@mui/icons-material/Clear';
+import NotStartedIcon from '@mui/icons-material/NotStarted';
 
 import {useTelegram} from '../../common/customHook';
 
+import s from './Header.module.css';
+
 export const Header = () => {
 
-  const {tg, onCloseTMA} = useTelegram();
+  const {onCloseTMA, userTG, onToggleButton} = useTelegram();
 
   return (
-    <div>
-      <Button onClick={onCloseTMA}>Закрыть</Button>
+    <div className={s.headerContainer}>
       <span>
-        {tg.initDataUnsafe?.user?.username}
+        {userTG?.username ? userTG?.username : 'Пользователь'}
       </span>
+      <IconButton
+        color="primary"
+        aria-label="Открыть интерфейс">
+        <NotStartedIcon onClick={onToggleButton}/>
+      </IconButton>
+      <IconButton
+        color="primary"
+        aria-label="Закрыть">
+        <ClearIcon onClick={onCloseTMA}/>
+      </IconButton>
     </div>
   );
 };
