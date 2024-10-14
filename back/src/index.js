@@ -30,10 +30,13 @@ app.post('/telegram-webhook', (req, res) => {
 app.post('/send-form-data', handleCommissionForm);
 app.post('/send-form-data-rs', handleVerificationRSForm);
 
+const participants = new Set();
+
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
     console.log('bot on started')
+    participants.add(chatId);
     if (msg?.web_app_data?.data) {
         try {
             const data = JSON.parse(msg?.web_app_data?.data);
@@ -47,6 +50,10 @@ bot.on('message', async (msg) => {
                     remarks: data.commissionRemarks,
                 });
                 await bot.sendMessage(chatId, '✅ Форма "Комиссионные" отправлена и данные добавлены.');
+
+                for (const participantChatId of participants) {
+                    await bot.sendMessage(participantChatId, '🗣📢🗣📢🗣📢 В табличку, комиссионные 👨🏻‍🔧, внесли новую информацию🗳️.');
+                }
             }
 
             // Если данные относятся к радиостанции
@@ -57,6 +64,10 @@ bot.on('message', async (msg) => {
                     serialNumber: data.radioSerialNumber,
                 });
                 await bot.sendMessage(chatId, '✅ Форма "Радиостанция" отправлена и данные добавлены.');
+
+                for (const participantChatId of participants) {
+                    await bot.sendMessage(participantChatId, '🗣📢🗣📢🗣📢 В табличку, радиостанции 📲, внесли новую информацию 🗳️.');
+                }
             }
         } catch (e) {
             console.log('Ошибка при отправке данных:', e);
