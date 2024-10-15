@@ -53,24 +53,22 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  docker:
+  deploy_local:
     runs-on: ubuntu-20.04
+    needs: build
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Pull the latest Docker image
+        run: docker pull ilyagoncharovdev/worktracker:latest
 
-      - name: Build and tag Docker image
-        run: docker build -t ilyagoncharovdev/worktracker:latest ./front
-
-      - name: Push Docker image
-        run: docker push ilyagoncharovdev/worktracker:latest
-
-      - name: Deploy container to server
+      - name: Stop and remove the old container
         run: |
-          ssh user@your-server "docker pull ilyagoncharovdev/worktracker:latest && \
-            docker stop worktracker-container && \
-            docker rm worktracker-container && \
-            docker run -d --name worktracker-container -p 5173:5173 ilyagoncharovdev/worktracker:latest"
+          docker stop worktracker-container || true
+          docker rm worktracker-container || true
+
+      - name: Run the updated container locally
+        run: |
+          docker run -d --name worktracker-container -p 5173:5173 ilyagoncharovdev/worktracker:latest
