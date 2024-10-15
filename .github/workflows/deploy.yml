@@ -1,4 +1,4 @@
-name: pnpm Example Workflow
+name: Deploy and Update Docker Container
 
 on:
   push:
@@ -52,3 +52,25 @@ jobs:
         uses: actions/deploy-pages@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Build and tag Docker image
+        run: docker build -t ilyagoncharovdev/worktracker:latest ./front
+
+      - name: Push Docker image
+        run: docker push ilyagoncharovdev/worktracker:latest
+
+      - name: Deploy container to server
+        run: |
+          ssh user@your-server "docker pull ilyagoncharovdev/worktracker:latest && \
+            docker stop worktracker-container && \
+            docker rm worktracker-container && \
+            docker run -d --name worktracker-container -p 5173:5173 ilyagoncharovdev/worktracker:latest"
