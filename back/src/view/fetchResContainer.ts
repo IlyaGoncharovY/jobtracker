@@ -1,4 +1,4 @@
-export const sendFormData = async (url, data) => {
+export const sendFormData = async (url: string, data: any) => {
     try {
         const response = await fetch(url, {
             method: 'POST',

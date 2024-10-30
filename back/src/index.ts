@@ -3,9 +3,10 @@ import dotenv from 'dotenv';
 import express from 'express';
 import TelegramBot from 'node-telegram-bot-api';
 
-import {sendFormData} from "./view/fetchResContainer.js";
-import {sendCommissionMessage, sendVerificationMessage} from "./view/viewSendMessage.js";
-import {handleCommissionForm, handleVerificationRSForm} from "./controllers/formControllers.js";
+import {sendFormData} from "./view/fetchResContainer";
+import {sendCommissionMessage, sendVerificationMessage} from "./view/viewSendMessage";
+import {handleCommissionForm, handleVerificationRSForm} from "./controllers/formControllers";
+import {CommissionDataTypes, VerificationDataTypes} from "./type/types";
 
 dotenv.config();
 
@@ -30,7 +31,7 @@ app.post('/telegram-webhook', (req, res) => {
 app.post('/send-form-data', handleCommissionForm);
 app.post('/send-form-data-rs', handleVerificationRSForm);
 
-const participants = new Set();
+const participants = new Set<number>();
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
@@ -98,11 +99,11 @@ bot.on('message', async (msg) => {
             const data = JSON.parse(msg?.web_app_data?.data);
 
             if (data?.selectedEmployeeName) {
-                await sendCommissionMessage(bot, chatId, data);
+                await sendCommissionMessage(bot, chatId, data as CommissionDataTypes);
             }
 
             if (data?.selectedRadioStationName) {
-                await sendVerificationMessage(bot, chatId, data);
+                await sendVerificationMessage(bot, chatId, data as VerificationDataTypes);
             }
 
             setTimeout(async ()=> {
