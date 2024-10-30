@@ -1,6 +1,6 @@
-import sheets, {SHEET_ID} from "../client/sheetClient.js";
+import sheets, {SHEET_ID} from "../client/sheetClient";
 
-export const appendToSheet = async (range, values) => {
+export const appendToSheet = async (range: string, values: string[]) => {
     try {
         await sheets.spreadsheets.values.append({
             spreadsheetId: SHEET_ID,

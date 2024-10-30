@@ -1,6 +1,6 @@
 import { ZodError } from 'zod';
-import { appendToSheet } from '../models/sheetModel.js';
-import { commissionDataFormSchema, verificationRSDataFormSchema } from '../schema/validationSchemas.js';
+import { appendToSheet } from '../models/sheetModel';
+import { commissionDataFormSchema, verificationRSDataFormSchema } from '../schema/validationSchemas';
 
 export const handleCommissionForm = async (req, res) => {
     try {
