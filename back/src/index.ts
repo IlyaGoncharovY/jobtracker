@@ -13,6 +13,7 @@ dotenv.config();
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 const webGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/1zsAZjXsQPDBvxJt1cGykvFtEB1gCKVPpFD8ckbhZtys/edit?gid=1582341699#gid=1582341699';
+const webYandexTechCardUrl = 'https://disk.yandex.ru/d/iA59ojO89g5vDw';
 const app = express();
 
 app.use(express.json());
@@ -87,7 +88,7 @@ bot.on('message', async (msg) => {
             'Попробуй заполнить форму 🪪 или посмотри данные в табличке 📃', {
             reply_markup: {
                 inline_keyboard: [
-                    [{text: 'Заполни форму для "комисионные/радио-станции"', web_app: {url: webTMAUrl}}],
+                    [{text: 'Просмотреть тех-карты', web_app: {url: webYandexTechCardUrl}}],
                     [{text: 'Посмотреть таблицу"', web_app: {url: webGoogleSheetUrl}}]
                 ]
             }
