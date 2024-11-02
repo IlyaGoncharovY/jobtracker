@@ -76,7 +76,7 @@ bot.on('message', async (msg) => {
         }
     }
     if (text === '/start') {
-        await bot.sendMessage(chatId, 'Нажмите ниже "Заполнить форму, что бы отправить данные"', {
+        await bot.sendMessage(chatId, 'Нажмите ниже 🪟 "Заполнить форму, что бы отправить данные"', {
             reply_markup: {
                 keyboard: [
                     [{text: '➡️ Заполни форму', web_app: {url: webTMAUrl}}]
@@ -88,8 +88,8 @@ bot.on('message', async (msg) => {
             'Попробуй заполнить форму 🪪 или посмотри данные в табличке 📃', {
             reply_markup: {
                 inline_keyboard: [
-                    [{text: 'Просмотреть тех-карты', web_app: {url: webYandexTechCardUrl}}],
-                    [{text: 'Посмотреть таблицу"', web_app: {url: webGoogleSheetUrl}}]
+                    [{text: '📚 Просмотреть тех-карты', web_app: {url: webYandexTechCardUrl}}],
+                    [{text: '📃 Посмотреть таблицу', web_app: {url: webGoogleSheetUrl}}]
                 ]
             }
         });
