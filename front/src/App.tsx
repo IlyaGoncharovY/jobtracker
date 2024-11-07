@@ -13,7 +13,7 @@ export const App = () => {
   useEffect(() => {
     tg.ready();
   }, [tg]);
-
+    console.log('test check linter')
   return (
     <div className={s.AppContainer}>
       <Header/>
