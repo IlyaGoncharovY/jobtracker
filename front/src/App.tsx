@@ -15,6 +15,7 @@ export const App = () => {
   }, [tg]);
 
     console.log('test linter log')
+
   return (
     <div className={s.AppContainer}>
       <Header/>
