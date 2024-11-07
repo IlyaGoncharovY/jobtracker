@@ -13,6 +13,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - name: Install Vite
+        run: npm install -g vite
       - name: Install dependencies
         working-directory: front
         run: pnpm install
@@ -29,6 +31,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+      - name: Install Vite
+        run: npm install -g vite
       - name: Install dependencies
         working-directory: front
         run: pnpm install
