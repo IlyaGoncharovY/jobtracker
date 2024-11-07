@@ -14,8 +14,6 @@ export const App = () => {
     tg.ready();
   }, [tg]);
 
-    console.log('test linter log')
-
   return (
     <div className={s.AppContainer}>
       <Header/>
