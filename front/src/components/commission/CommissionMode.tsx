@@ -2,7 +2,7 @@ import {memo, useCallback} from 'react';
 
 import {stationData, usersData} from '../../data';
 import {sendDataHelper} from '../../common/helpers';
-import {FormContainer} from '../../common/components';
+import {FormContainer, FormWrapper} from '../../common/components';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
 
 export const CommissionMode = memo(() => {
@@ -47,23 +47,25 @@ export const CommissionMode = memo(() => {
   }, [commissionDate, commissionEmployee, commissionRemarks, commissionStation, tg]);
 
   return (
-    <FormContainer
-      onSendData={onSendData}
-      placeholderSelect={'Выберите сотруника'}
-      selectorArrDataFirst={usersData}
-      selectedValue={commissionEmployee}
-      onChangeSelect={setCommissionEmployee}
-      placeholderSelectSecond={'Выберите станцию'}
-      selectorArrDataSecond={stationData}
-      selectedValueSecond={commissionStation}
-      onChangeSelectSecond={setCommissionStation}
-      dateValue={commissionDate}
-      onChangeDate={setCommissionDate}
-      inputPlaceholder={'Введите замечания'}
-      inputValue={commissionRemarks}
-      onChangeInput={setCommissionRemarks}
-      buttonText={'Радио-Станция'}
-      navigateTo={'/RadioStationMode'}
-    />
+    <FormWrapper initialX={'-100%'} exitX={'100%'}>
+      <FormContainer
+        onSendData={onSendData}
+        placeholderSelect={'Выберите сотруника'}
+        selectorArrDataFirst={usersData}
+        selectedValue={commissionEmployee}
+        onChangeSelect={setCommissionEmployee}
+        placeholderSelectSecond={'Выберите станцию'}
+        selectorArrDataSecond={stationData}
+        selectedValueSecond={commissionStation}
+        onChangeSelectSecond={setCommissionStation}
+        dateValue={commissionDate}
+        onChangeDate={setCommissionDate}
+        inputPlaceholder={'Введите замечания'}
+        inputValue={commissionRemarks}
+        onChangeInput={setCommissionRemarks}
+        buttonText={'Радио-Станция'}
+        navigateTo={'/RadioStationMode'}
+      />
+    </FormWrapper>
   );
 });

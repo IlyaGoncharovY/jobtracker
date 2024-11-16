@@ -2,7 +2,7 @@ import {memo, useCallback} from 'react';
 
 import {stationForRadioData} from '../../data';
 import {sendDataHelper} from '../../common/helpers';
-import {FormContainer} from '../../common/components';
+import {FormContainer, FormWrapper} from '../../common/components';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
 
 export const RadioStationMode = memo(() => {
@@ -40,19 +40,21 @@ export const RadioStationMode = memo(() => {
   }, [radioDate, radioSerialNumber, radioStation, tg]);
 
   return (
-    <FormContainer
-      onSendData={onSendData}
-      placeholderSelect={'Выберите станцию'}
-      selectorArrDataFirst={stationForRadioData}
-      selectedValue={radioStation}
-      onChangeSelect={setRadioStation}
-      dateValue={radioDate}
-      onChangeDate={setRadioDate}
-      inputPlaceholder={'Серийный номер'}
-      inputValue={radioSerialNumber}
-      onChangeInput={setRadioSerialNumber}
-      buttonText={'Комиссионные'}
-      navigateTo={'/'}
-    />
+    <FormWrapper initialX={'100%'} exitX={'-100%'}>
+      <FormContainer
+        onSendData={onSendData}
+        placeholderSelect={'Выберите станцию'}
+        selectorArrDataFirst={stationForRadioData}
+        selectedValue={radioStation}
+        onChangeSelect={setRadioStation}
+        dateValue={radioDate}
+        onChangeDate={setRadioDate}
+        inputPlaceholder={'Серийный номер'}
+        inputValue={radioSerialNumber}
+        onChangeInput={setRadioSerialNumber}
+        buttonText={'Комиссионные'}
+        navigateTo={'/'}
+      />
+    </FormWrapper>
   );
 });
