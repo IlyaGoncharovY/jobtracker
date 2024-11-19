@@ -1,9 +1,9 @@
 import {memo, useCallback} from 'react';
 
 import {stationData, usersData} from '../../data';
-import {sendDataHelper} from '../../common/helpers';
 import {FormContainer, FormWrapper} from '../../common/components';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
+import {sendDataHelper, convertingArray} from '../../common/helpers';
 
 export const CommissionMode = memo(() => {
   const {
@@ -18,13 +18,8 @@ export const CommissionMode = memo(() => {
   const onSendData = useCallback((): void => {
     if (!commissionDate) return;
 
-    const selectedEmployeeName = usersData
-      .find(user =>
-        user.id === Number(commissionEmployee))?.name || 'Неизвестный сотрудник';
-
-    const selectedStationName = stationData
-      .find(station =>
-        station.id === Number(commissionStation))?.name || 'Неизвестная станция';
+    const selectedEmployeeName = convertingArray(usersData, commissionEmployee);
+    const selectedStationName = convertingArray(stationData, commissionStation);
 
     const formattedDate = commissionDate.split('-').reverse().join('-');
 
