@@ -1,9 +1,9 @@
 import {memo, useCallback} from 'react';
 
 import {stationForRadioData} from '../../data';
-import {sendDataHelper} from '../../common/helpers';
 import {FormContainer, FormWrapper} from '../../common/components';
 import {useSendDataForm, useTelegram} from '../../common/customHook';
+import {sendDataHelper, convertingArray} from '../../common/helpers';
 
 export const RadioStationMode = memo(() => {
   const {
@@ -17,10 +17,7 @@ export const RadioStationMode = memo(() => {
   const onSendData = useCallback((): void => {
     if (!radioDate) return;
 
-    const selectedRadioStationName = stationForRadioData
-      .find(radio =>
-        radio.id === Number(radioStation))?.name || 'Неизвестная станция';
-
+    const selectedRadioStationName = convertingArray(stationForRadioData, radioStation);
     const formattedDate = radioDate.split('-').reverse().join('-');
 
     const dataToSend = {
