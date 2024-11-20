@@ -26,15 +26,27 @@ export const handleVerificationRSForm = async (req, res) => {
 
         // Проверка валидности даты
         const isValidDate = (dateStr) => {
-            const date = new Date(dateStr);
-            return !isNaN(date.getTime());
+            const [day, month, year] = dateStr.split('-').map(Number);
+            // Проверяем, что день, месяц и год являются числами
+            if (!day || !month || !year) {
+                return false;
+            }
+            // Создаем дату
+            const date = new Date(year, month - 1, day);
+            // Проверяем, что дата корректная и совпадает с введенными значениями
+            return (
+                date.getDate() === day &&
+                date.getMonth() === month - 1 &&
+                date.getFullYear() === year
+            );
         };
 
         if (!isValidDate(body.dateVerification)) {
             throw new Error('Некорректный формат даты');
         }
 
-        const dateVerification = new Date(body.dateVerification);
+        const [day, month, year] = body.dateVerification.split('-').map(Number);
+        const dateVerification = new Date(year, month - 1, day);
         const nextYearDate = new Date(dateVerification);
         nextYearDate.setFullYear(dateVerification.getFullYear() + 1);
 
