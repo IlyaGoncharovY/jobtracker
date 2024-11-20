@@ -61,8 +61,9 @@ export const handleVerificationRSForm = async (req, res) => {
 };
 
 const handleError = (e, res) => {
+    console.error('Ошибка на сервере:', e);
     if (e instanceof ZodError) {
-        res.status(400).json({ error: e.message });
+        res.status(400).json({ error: e.errors });
     } else {
         res.status(400).json({ error: e.message });
     }
