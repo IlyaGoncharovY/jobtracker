@@ -1,4 +1,6 @@
 export const sendFormData = async (url: string, data: any) => {
+    console.log('sendFormData - called')
+    console.log(data)
     try {
         const response = await fetch(url, {
             method: 'POST',
