@@ -1,8 +1,13 @@
 import { ZodError } from 'zod';
+import { Request, Response } from 'express';
 import { appendToSheet } from '../models/sheetModel';
 import { commissionDataFormSchema, verificationRSDataFormSchema } from '../schema/validationSchemas';
+import {isValidDate, processDate} from "../halpers";
+import {CommissionDataTypes, VerificationDataTypes} from "../type/types";
 
-export const handleCommissionForm = async (req, res) => {
+export const handleCommissionForm = async (
+    req: Request<{}, {}, CommissionDataTypes>,
+    res: Response): Promise<void> => {
     try {
         const body = commissionDataFormSchema.parse(req.body);
         const commissionsRows = [
@@ -20,33 +25,20 @@ export const handleCommissionForm = async (req, res) => {
     }
 };
 
-export const handleVerificationRSForm = async (req, res) => {
+export const handleVerificationRSForm = async (
+    req: Request<{}, {}, VerificationDataTypes>,
+    res: Response): Promise<void> => {
     try {
         const body = verificationRSDataFormSchema.parse(req.body);
-
-        // Проверка валидности даты
-        const isValidDate = (dateStr) => {
-            const date = new Date(dateStr);
-            return !isNaN(date.getTime());
-        };
 
         if (!isValidDate(body.dateVerification)) {
             throw new Error('Некорректный формат даты');
         }
 
-        const dateVerification = new Date(body.dateVerification);
-        const nextYearDate = new Date(dateVerification);
-        nextYearDate.setFullYear(dateVerification.getFullYear() + 1);
-
-        const formattedDate = (date) => {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}-${month}-${year}`;
-        };
+        const { dateVerification, nextYearDate, formattedDate } = processDate(body.dateVerification);
 
         const radioStationRows = [
-            body.dateVerification,
+            formattedDate(dateVerification),
             body.station,
             body.serialNumber,
             formattedDate(nextYearDate),
@@ -60,9 +52,10 @@ export const handleVerificationRSForm = async (req, res) => {
     }
 };
 
-const handleError = (e, res) => {
+const handleError = (e, res: Response) => {
+    console.error('Ошибка на сервере:', e);
     if (e instanceof ZodError) {
-        res.status(400).json({ error: e.message });
+        res.status(400).json({ error: e.errors });
     } else {
         res.status(400).json({ error: e.message });
     }
