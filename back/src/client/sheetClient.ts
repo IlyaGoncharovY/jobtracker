@@ -14,7 +14,7 @@ const client = new google.auth.JWT(
     ['https://www.googleapis.com/auth/spreadsheets']
 )
 
-client.authorize((err, tokens) => {
+client.authorize((err: Error) => {
     if (err) {
         console.error('Ошибка авторизации клиента Google Sheets:', err);
         return;

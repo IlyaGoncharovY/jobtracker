@@ -9,7 +9,7 @@
  * isValidDate('31-02-2024'); // false (некорректная дата)
  * isValidDate('abcd-ef-gh'); // false (некорректный формат)
  */
-export const isValidDate = (dateStr: string) => {
+export const isValidDate = (dateStr: string): boolean => {
     const [day, month, year] = dateStr.split('-').map(Number);
     // Проверяем, что день, месяц и год являются числами
     if (!day || !month || !year) {

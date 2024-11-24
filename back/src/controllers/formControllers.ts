@@ -1,9 +1,13 @@
 import { ZodError } from 'zod';
+import { Request, Response } from 'express';
 import { appendToSheet } from '../models/sheetModel';
 import { commissionDataFormSchema, verificationRSDataFormSchema } from '../schema/validationSchemas';
 import {isValidDate, processDate} from "../halpers";
+import {CommissionDataTypes, VerificationDataTypes} from "../type/types";
 
-export const handleCommissionForm = async (req, res) => {
+export const handleCommissionForm = async (
+    req: Request<{}, {}, CommissionDataTypes>,
+    res: Response): Promise<void> => {
     try {
         const body = commissionDataFormSchema.parse(req.body);
         const commissionsRows = [
@@ -21,7 +25,9 @@ export const handleCommissionForm = async (req, res) => {
     }
 };
 
-export const handleVerificationRSForm = async (req, res) => {
+export const handleVerificationRSForm = async (
+    req: Request<{}, {}, VerificationDataTypes>,
+    res: Response): Promise<void> => {
     try {
         const body = verificationRSDataFormSchema.parse(req.body);
 
@@ -46,7 +52,7 @@ export const handleVerificationRSForm = async (req, res) => {
     }
 };
 
-const handleError = (e, res) => {
+const handleError = (e, res: Response) => {
     console.error('Ошибка на сервере:', e);
     if (e instanceof ZodError) {
         res.status(400).json({ error: e.errors });

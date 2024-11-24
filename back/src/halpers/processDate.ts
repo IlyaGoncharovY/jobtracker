@@ -5,7 +5,12 @@
  * @returns {{ dateVerification: Date, nextYearDate: Date, formattedDate: (date: Date) => string }}
  * Объект, содержащий исходную дату, дату через год и функцию для форматирования дат.
  */
-export const processDate = (dateStr: string) => {
+export const processDate = (
+    dateStr: string): {
+    dateVerification: Date;
+    nextYearDate: Date;
+    formattedDate: (date: Date) => string;
+} => {
     const [day, month, year] = dateStr.split('-').map(Number);
     const dateVerification = new Date(year, month - 1, day);
     const nextYearDate = new Date(dateVerification);

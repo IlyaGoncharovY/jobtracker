@@ -1,7 +1,7 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import TelegramBot from 'node-telegram-bot-api';
+import TelegramBot, {Message} from 'node-telegram-bot-api';
 
 import {sendFormData} from "./view/fetchResContainer";
 import {sendCommissionMessage, sendVerificationMessage} from "./view/viewSendMessage";
@@ -34,7 +34,7 @@ app.post('/send-form-data-rs', handleVerificationRSForm);
 
 const participants = new Set<number>();
 
-bot.on('message', async (msg) => {
+bot.on('message', async (msg: Message) => {
     const chatId = msg.chat.id;
     const text = msg.text;
     console.log('bot on started')
