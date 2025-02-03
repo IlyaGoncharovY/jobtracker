@@ -91,7 +91,7 @@ bot.on('message', async (msg: Message) => {
                 inline_keyboard: [
                     [{text: '📚 Просмотреть тех-карты', web_app: {url: webYandexTechCardUrl}}],
                     [{text: '📃 Посмотреть таблицу', web_app: {url: webGoogleSheetUrl}}],
-                    [{text: '📃 Поиграть в игру', web_app: {url: dwarfFightGameUrl}}]
+                    [{text: '🧙🏼‍♂️ Поиграть в игру', web_app: {url: dwarfFightGameUrl}}]
                 ]
             }
         });
