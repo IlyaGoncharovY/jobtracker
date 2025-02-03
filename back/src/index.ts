@@ -14,6 +14,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 const webGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/1zsAZjXsQPDBvxJt1cGykvFtEB1gCKVPpFD8ckbhZtys/edit?gid=1582341699#gid=1582341699';
 const webYandexTechCardUrl = 'https://disk.yandex.ru/d/iA59ojO89g5vDw';
+const dwarfFightGameUrl = 'https://ilyagoncharovy.github.io/dwarf-fight/';
 const app = express();
 
 app.use(express.json());
@@ -89,7 +90,8 @@ bot.on('message', async (msg: Message) => {
             reply_markup: {
                 inline_keyboard: [
                     [{text: '📚 Просмотреть тех-карты', web_app: {url: webYandexTechCardUrl}}],
-                    [{text: '📃 Посмотреть таблицу', web_app: {url: webGoogleSheetUrl}}]
+                    [{text: '📃 Посмотреть таблицу', web_app: {url: webGoogleSheetUrl}}],
+                    [{text: '📃 Поиграть в игру', web_app: {url: dwarfFightGameUrl}}]
                 ]
             }
         });
