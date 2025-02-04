@@ -35,7 +35,7 @@ export const CommissionMode = memo(() => {
       stationName: selectedStationName,
       employeeName: selectedEmployeeName,
       remarks: commissionRemarks,
-      apiUrl: 'https://jobtracker-l44k.onrender.com/send-form-data',
+      apiUrl: 'https://jobtracker-l44k.onrender.com/api/forms/send-commission',
       tg,
       dataToSend,
     });

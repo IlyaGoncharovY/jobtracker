@@ -30,7 +30,7 @@ export const RadioStationMode = memo(() => {
       formattedDate,
       stationName: selectedRadioStationName,
       serialNumber: radioSerialNumber,
-      apiUrl: 'https://jobtracker-l44k.onrender.com/send-form-data-rs',
+      apiUrl: 'https://jobtracker-l44k.onrender.com/api/forms/send-verification',
       tg,
       dataToSend,
     });
