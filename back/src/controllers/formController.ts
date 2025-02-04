@@ -29,7 +29,6 @@ export const handleVerificationRSForm = async (req: Request, res: Response) => {
         console.log('Данные радио-станции:')
         console.log(radioStationRows);
 
-
         await appendToSheet('Sheet2!A:D', radioStationRows);
         res.json({ message: 'Данные добавлены' });
     } catch (e) {
