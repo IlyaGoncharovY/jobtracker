@@ -129,9 +129,6 @@ export const FormContainer:FC<IFormContainer> = memo(({
         <Button onClick={navigateToFormHandler}>
           {buttonText}
         </Button>
-        <Button onClick={onSendData}>
-              send
-        </Button>
       </div>
     </>
   );
