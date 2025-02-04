@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import formRoutes from './routes/formRoutes';
 import botRoutes from './routes/botRoutes';
+import gameRoutes from "./routes/gameRoutes";
 
 dotenv.config();
 
@@ -12,5 +13,7 @@ app.use(cors());
 
 app.use('/api/forms', formRoutes);
 app.use('/api/bot', botRoutes);
+
+app.use('/api/game', gameRoutes);
 
 export default app;
