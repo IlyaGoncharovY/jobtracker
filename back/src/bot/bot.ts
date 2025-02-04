@@ -1,6 +1,8 @@
 import TelegramBot, { Message } from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
 import {sendFormData} from "../services/telegramService";
+import {sendCommissionMessage, sendVerificationMessage} from "../view/messages";
+import {CommissionDataTypes, VerificationDataTypes} from "../types/formTypes";
 
 dotenv.config();
 
@@ -39,7 +41,7 @@ bot.on('message', async (msg: Message) => {
                 await bot.sendMessage(chatId, '✅ Форма "Комиссионные" отправлена и данные добавлены.');
 
                 for (const participantChatId of participants) {
-                    await bot.sendMessage(participantChatId, '🗣📢🗣📢🗣📢 В табличку, комиссионные 👨🏻‍🔧, внесли новую информацию 🗳️.');
+                    await bot.sendMessage(participantChatId, '🗣📢🗣📢🗣📢 В табличку, комиссионные 👨🏻‍🔧, внесли новую информацию🗳️.');
                 }
             }
 
@@ -57,36 +59,49 @@ bot.on('message', async (msg: Message) => {
                     await bot.sendMessage(participantChatId, '🗣📢🗣📢🗣📢 В табличку, радиостанции 📲, внесли новую информацию 🗳️.');
                 }
             }
-
-            // Отправляем финальное сообщение после заполнения формы
-            setTimeout(async () => {
-                await bot.sendMessage(chatId, '🔥🔥🔥 Ты молодец! Не забудь похвалить себя :)');
-            }, 2000);
         } catch (e) {
             console.log('Ошибка при отправке данных:', e);
         }
     }
-
     if (text === '/start') {
-        await bot.sendMessage(chatId, 'Нажмите ниже 🪟 "Заполнить форму, чтобы отправить данные"', {
+        await bot.sendMessage(chatId, 'Нажмите ниже 🪟 "Заполнить форму, что бы отправить данные"', {
             reply_markup: {
-                keyboard: [[{ text: '➡️ Заполни форму', web_app: { url: webTMAUrl } }]],
-            },
+                keyboard: [
+                    [{text: '➡️ Заполни форму', web_app: {url: webTMAUrl}}]
+                ]
+            }
         });
 
-        await bot.sendMessage(
-            chatId,
-            '🚀🚀🚀 Бот запущен на все 💯! Попробуй заполнить форму 🪪 или посмотри данные в табличке 📃',
-            {
-                reply_markup: {
-                    inline_keyboard: [
-                        [{ text: '📚 Просмотреть тех-карты', web_app: { url: webYandexTechCardUrl } }],
-                        [{ text: '📃 Посмотреть таблицу', web_app: { url: webGoogleSheetUrl } }],
-                        [{ text: '🧙🏼‍♂️ Поиграть в игру', web_app: { url: dwarfFightGameUrl } }],
-                    ],
-                },
+        await bot.sendMessage(chatId, '🚀🚀🚀 Бот запущен на все 💯!' +
+            'Попробуй заполнить форму 🪪 или посмотри данные в табличке 📃', {
+            reply_markup: {
+                inline_keyboard: [
+                    [{text: '📚 Просмотреть тех-карты', web_app: {url: webYandexTechCardUrl}}],
+                    [{text: '📃 Посмотреть таблицу', web_app: {url: webGoogleSheetUrl}}],
+                    [{text: '🧙🏼‍♂️ Поиграть в игру', web_app: {url: dwarfFightGameUrl}}]
+                ]
             }
-        );
+        });
+    }
+
+    if (msg?.web_app_data?.data) {
+        try {
+            const data = JSON.parse(msg?.web_app_data?.data);
+
+            if (data?.selectedEmployeeName) {
+                await sendCommissionMessage(bot, chatId, data as CommissionDataTypes);
+            }
+
+            if (data?.selectedRadioStationName) {
+                await sendVerificationMessage(bot, chatId, data as VerificationDataTypes);
+            }
+
+            setTimeout(async ()=> {
+                await bot.sendMessage( chatId, '🔥🔥🔥 Ты молодец! Не забудь похвалить себя :)');
+            }, 2000)
+        } catch (e) {
+            console.log(e)
+        }
     }
 });
 
