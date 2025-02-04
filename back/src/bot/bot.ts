@@ -1,37 +1,19 @@
-import cors from 'cors';
-import dotenv from 'dotenv';
-import express from 'express';
 import TelegramBot, {Message} from 'node-telegram-bot-api';
-
-import {sendFormData} from "./view/fetchResContainer";
-import {sendCommissionMessage, sendVerificationMessage} from "./view/viewSendMessage";
-import {handleCommissionForm, handleVerificationRSForm} from "./controllers/formControllers";
-import {CommissionDataTypes, VerificationDataTypes} from "./type/types";
+import dotenv from 'dotenv';
+import { sendCommissionMessage, sendVerificationMessage } from '../view/messages';
+import { sendFormData } from '../services/telegramService';
+import {CommissionDataTypes, VerificationDataTypes} from "../types/formTypes";
 
 dotenv.config();
 
-const token = process.env.TELEGRAM_BOT_TOKEN;
+const token = process.env.TELEGRAM_BOT_TOKEN!;
+const webhookUrl = process.env.URL_SERVER!;
 const webTMAUrl = 'https://ilyagoncharovy.github.io/jobtracker/';
 const webGoogleSheetUrl = 'https://docs.google.com/spreadsheets/d/1zsAZjXsQPDBvxJt1cGykvFtEB1gCKVPpFD8ckbhZtys/edit?gid=1582341699#gid=1582341699';
 const webYandexTechCardUrl = 'https://disk.yandex.ru/d/iA59ojO89g5vDw';
 const dwarfFightGameUrl = 'https://ilyagoncharovy.github.io/dwarf-fight/';
-const app = express();
-
-app.use(express.json());
-app.use(cors());
-
-const webhookUrl = process.env.URL_SERVER;
-
 const bot = new TelegramBot(token);
 bot.setWebHook(webhookUrl);
-
-app.post('/telegram-webhook', (req, res) => {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-});
-
-app.post('/send-form-data', handleCommissionForm);
-app.post('/send-form-data-rs', handleVerificationRSForm);
 
 const participants = new Set<number>();
 
@@ -117,6 +99,5 @@ bot.on('message', async (msg: Message) => {
         }
     }
 });
-const PORT = 8000;
 
-app.listen(PORT, () => console.log(`server started on PORT: ${PORT}`));
+export default bot;

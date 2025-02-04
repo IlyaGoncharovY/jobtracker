@@ -1,5 +1,5 @@
-import TelegramBot from "node-telegram-bot-api";
-import {CommissionDataTypes, VerificationDataTypes} from "../type/types";
+import TelegramBot from 'node-telegram-bot-api';
+import { CommissionDataTypes, VerificationDataTypes } from '../types/formTypes';
 
 export const sendCommissionMessage = async (bot: TelegramBot, chatId: number, data: CommissionDataTypes) => {
     await bot.sendMessage(chatId, `✨ Комиссионый завершён.`);
