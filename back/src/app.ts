@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import formRoutes from './routes/formRoutes';
-import botRoutes from './routes/botRoutes';
-import gameRoutes from "./routes/gameRoutes";
+import formRoutes from './formServer/routes/formRoutes';
+import botRoutes from './tgBot/routes/botRoutes';
+import gameRoutes from "./game/routes/gameRoutes";
 
 dotenv.config();
 

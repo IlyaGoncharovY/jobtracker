@@ -1,8 +1,8 @@
 import TelegramBot, { Message } from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
-import {sendFormData} from "../services/telegramService";
-import {sendCommissionMessage, sendVerificationMessage} from "../view/messages";
-import {CommissionDataTypes, VerificationDataTypes} from "../types/formTypes";
+import {sendFormData} from "./services/telegramService";
+import {sendCommissionMessage, sendVerificationMessage} from "./view/messages";
+import {CommissionDataTypes, VerificationDataTypes} from "../formServer/types/formTypes";
 
 dotenv.config();
 

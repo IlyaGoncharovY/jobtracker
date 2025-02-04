@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { appendToSheet } from '../models/sheetModel';
+import { appendToSheet } from '../googleSheet/models/sheetModel';
 import { commissionDataFormSchema, verificationRSDataFormSchema } from '../schema/validationSchemas';
 import { isValidDate, processDate } from '../utils';
 
