@@ -15,6 +15,7 @@ const bot = new TelegramBot(token, { polling: true });
 bot.setWebHook(webhookUrl);
 
 const participants = new Set<number>();
+console.log(participants)
 
 bot.on('message', async (msg: Message) => {
     const chatId = msg.chat.id;
