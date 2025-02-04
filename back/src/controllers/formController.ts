@@ -7,6 +7,8 @@ export const handleCommissionForm = async (req: Request, res: Response) => {
     try {
         const body = commissionDataFormSchema.parse(req.body);
         const commissionsRows = [body.dateCommission, body.employeeName, body.station, body.remarks];
+        console.log('Данные комиссионного:')
+        console.log(commissionsRows);
 
         await appendToSheet('Sheet1!A:D', commissionsRows);
         res.json({ message: 'Данные добавлены' });
@@ -24,6 +26,9 @@ export const handleVerificationRSForm = async (req: Request, res: Response) => {
 
         const { dateVerification, nextYearDate, formattedDate } = processDate(body.dateVerification);
         const radioStationRows = [formattedDate(dateVerification), body.station, body.serialNumber, formattedDate(nextYearDate)];
+        console.log('Данные радио-станции:')
+        console.log(radioStationRows);
+
 
         await appendToSheet('Sheet2!A:D', radioStationRows);
         res.json({ message: 'Данные добавлены' });
