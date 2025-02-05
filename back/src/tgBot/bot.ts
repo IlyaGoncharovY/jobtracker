@@ -14,7 +14,7 @@ const webYandexTechCardUrl = 'https://disk.yandex.ru/d/iA59ojO89g5vDw';
 const dwarfFightGameUrl = 'https://ilyagoncharovy.github.io/dwarf-fight/';
 
 
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(token);
 bot.setWebHook(webhookUrl);
 
 const participants = new Set<number>();
