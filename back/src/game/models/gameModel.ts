@@ -1,15 +1,15 @@
 import { FightState } from '../types/gameTypes';
 import { v4 as uuidv4 } from 'uuid';
 
-const activeGames: Record<string, FightState> = {};
+export const activeGames: Record<string, FightState> = {};
 
 export const createGame = (player1Id: string, player2Id: string): FightState => {
     const gameId = uuidv4();
     const newGame: FightState = {
         id: gameId,
         players: [
-            { id: player1Id, hp: 5, damage: 1, move: 'center', setDamage: 'center' },
-            { id: player2Id, hp: 5, damage: 1, move: 'center', setDamage: 'center' },
+            { id: player1Id, hp: 5, damage: 1, move: null, setDamage: null },
+            { id: player2Id, hp: 5, damage: 1, move: null, setDamage: null },
         ],
         currentTurn: 0,
         turnCount: 0,
@@ -17,7 +17,7 @@ export const createGame = (player1Id: string, player2Id: string): FightState => 
         gameOver: false,
     };
 
-    activeGames[gameId] = newGame;
+    activeGames[newGame.id] = newGame;
     return newGame;
 };
 
