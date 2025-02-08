@@ -11,6 +11,7 @@ server.listen(PORT, () => {
     console.log(`HTTP сервер запущен на порту ${PORT}`);
 });
 
+
 const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
