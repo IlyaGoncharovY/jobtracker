@@ -1,5 +1,5 @@
 import { getGameById, updateGame, createGame, activeGames } from '../models/gameModel';
-import WebSocket from 'ws';
+import { WebSocket } from 'ws';
 import {AttackActionType, FighterState, FightState, MoveActionType} from "../types/gameTypes";
 
 /**
