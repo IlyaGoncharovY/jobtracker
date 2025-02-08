@@ -1,8 +1,21 @@
 import { getGameById, updateGame, createGame, activeGames } from '../models/gameModel';
 import WebSocket from 'ws';
+import {AttackActionType, FighterState, FightState, MoveActionType} from "../types/gameTypes";
 
+/**
+ * Мапа для хранения WebSocket-соединений игроков.
+ */
 const players = new Map<string, WebSocket>();
 
+/**
+ * Обрабатывает подключение нового игрока.
+ *
+ * Если активной игры с ожидающим игроком нет, создаётся новая игра.
+ * Если игра найдена, то игрок заменяет значение "waiting".
+ *
+ * @param {string} playerId - Идентификатор подключаемого игрока.
+ * @param {WebSocket} ws - WebSocket-соединение игрока.
+ */
 export const handlePlayerConnect = (playerId: string, ws: WebSocket): void => {
     let game = Object.values(activeGames).find(g => g.players.some(p => p.id === "waiting"));
 
@@ -22,7 +35,13 @@ export const handlePlayerConnect = (playerId: string, ws: WebSocket): void => {
     sendGameState(game);
 };
 
-export const makeMove = (ws: WebSocket, data: any) => {
+/**
+ * Обрабатывает действие движения игрока.
+ *
+ * @param {WebSocket} ws - WebSocket-соединение игрока.
+ * @param {MoveActionType} data - Данные о действии движения.
+ */
+export const makeMove = (ws: WebSocket, data: MoveActionType) => {
     const { gameId, playerId, direction } = data;
     console.log(`[MOVE] Игрок ${playerId} выбирает движение "${direction}" в игре ${gameId}`);
     const game = getGameById(gameId);
@@ -41,7 +60,13 @@ export const makeMove = (ws: WebSocket, data: any) => {
     checkTurnCompletion(game);
 };
 
-export const makePunch = (ws: WebSocket, data: any) => {
+/**
+ * Обрабатывает действие атаки игрока.
+ *
+ * @param {WebSocket} ws - WebSocket-соединение игрока.
+ * @param {AttackActionType} data - Данные о действии атаки.
+ */
+export const makePunch = (ws: WebSocket, data: AttackActionType) => {
     const { gameId, playerId, attackDirection } = data;
     console.log(`[PUNCH] Игрок ${playerId} выбирает атаку "${attackDirection}" в игре ${gameId}`);
     const game = getGameById(gameId);
@@ -60,13 +85,24 @@ export const makePunch = (ws: WebSocket, data: any) => {
     checkTurnCompletion(game);
 };
 
-const checkTurnCompletion = (game: any) => {
-    const bothPlayersActed = game.players.every((p: any) => p.move !== null && p.setDamage !== null);
+/**
+ * Проверяет, завершили ли оба игрока свой ход, и обрабатывает результат.
+ *
+ * Если оба игрока выбрали действия (move и setDamage не равны null), происходит:
+ * - вычисление нанесённого урона,
+ * - увеличение счётчика ходов,
+ * - проверка на окончание игры (по HP или по лимиту ходов),
+ * - сброс действий игроков.
+ *
+ * @param {FightState} game - Состояние игры.
+ */
+const checkTurnCompletion = (game: FightState) => {
+    const bothPlayersActed = game.players.every((p: FighterState) => p.move !== null && p.setDamage !== null);
 
     if (bothPlayersActed) {
         console.log(`--------------------------`);
         console.log(`Обработка хода ${game.turnCount + 1} для игры ${game.id}:`);
-        game.players.forEach((p: any) => {
+        game.players.forEach((p: FighterState) => {
             console.log(`Игрок ${p.id}: движение = ${p.move}, атака = ${p.setDamage}, HP = ${p.hp}`);
         });
 
@@ -90,9 +126,9 @@ const checkTurnCompletion = (game: any) => {
 
         game.turnCount += 1;
 
-        if (game.players.some((p: any) => p.hp <= 0)) {
+        if (game.players.some((p: FighterState) => p.hp <= 0)) {
             game.gameOver = true;
-            const winner = game.players.find((p: any) => p.hp > 0);
+            const winner = game.players.find((p: FighterState) => p.hp > 0);
             if (winner) {
                 game.result = `Победил: ${winner.id}`;
                 console.log(`Игра ${game.id} окончена. Победил: ${winner.id}`);
@@ -108,11 +144,11 @@ const checkTurnCompletion = (game: any) => {
             console.log(`Завершён ход ${game.turnCount} в игре ${game.id}`);
         }
 
-        game.players.forEach((p: any) => {
+        game.players.forEach((p: FighterState) => {
             console.log(`Игрок ${p.id}: HP = ${p.hp}`);
         });
 
-        game.players.forEach((p: any) => {
+        game.players.forEach((p: FighterState) => {
             p.move = null;
             p.setDamage = null;
         });
@@ -123,8 +159,13 @@ const checkTurnCompletion = (game: any) => {
     sendGameState(game);
 };
 
-const sendGameState = (game: any) => {
-    game.players.forEach((player: any) => {
+/**
+ * Отправляет обновлённое состояние игры всем подключённым игрокам.
+ *
+ * @param {FightState} game - Состояние игры.
+ */
+const sendGameState = (game: FightState) => {
+    game.players.forEach((player: FighterState) => {
         const ws = players.get(player.id);
         if (ws) {
             ws.send(JSON.stringify({
@@ -133,7 +174,7 @@ const sendGameState = (game: any) => {
                 result: game.result,
                 turnCount: game.turnCount,
                 player,
-                opponent: game.players.find((p: any) => p.id !== player.id) || null
+                opponent: game.players.find((p: FighterState) => p.id !== player.id) || null
             }));
         }
     });
