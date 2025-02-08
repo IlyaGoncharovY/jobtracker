@@ -1,4 +1,4 @@
-import WebSocket from "ws";
+import { WebSocketServer } from 'ws';
 import http from "http";
 import app from "./app";
 import { handlePlayerConnect, makeMove, makePunch } from "./game/controllers/gameController";
@@ -11,7 +11,7 @@ server.listen(PORT, () => {
     console.log(`HTTP сервер запущен на порту ${PORT}`);
 });
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
     console.log("Новое WebSocket-соединение установлено");
