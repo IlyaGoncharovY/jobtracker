@@ -106,8 +106,8 @@ const checkTurnCompletion = (game: FightState) => {
             console.log(`Игрок ${p.id}: движение = ${p.move}, атака = ${p.setDamage}, HP = ${p.hp}`);
         });
 
-        game.players.forEach((player: any) => {
-            const opponent = game.players.find((p: any) => p.id !== player.id);
+        game.players.forEach((player: FighterState) => {
+            const opponent = game.players.find((p: FighterState) => p.id !== player.id);
             if (opponent) {
                 if (player.setDamage === opponent.move) {
                     console.log(
