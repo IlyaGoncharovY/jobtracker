@@ -130,15 +130,15 @@ const checkTurnCompletion = (game: FightState) => {
             game.gameOver = true;
             const winner = game.players.find((p: FighterState) => p.hp > 0);
             if (winner) {
-                game.result = `Победил: ${winner.id}`;
+                game.result = `Winner: ${winner.id}`;
                 console.log(`Игра ${game.id} окончена. Победил: ${winner.id}`);
             } else {
-                game.result = `Оба игрока повержены`;
+                game.result = `Both players are down`;
                 console.log(`Игра ${game.id} окончена. Оба игрока повержены`);
             }
         } else if (game.turnCount >= game.maxTurns) {
             game.gameOver = true;
-            game.result = `Ничья`;
+            game.result = `Draw`;
             console.log(`Игра ${game.id} окончена. Ничья`);
         } else {
             console.log(`Завершён ход ${game.turnCount} в игре ${game.id}`);
