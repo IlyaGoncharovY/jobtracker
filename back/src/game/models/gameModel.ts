@@ -19,8 +19,8 @@ export const createGame = (player1Id: string, player2Id: string): FightState => 
     const newGame: FightState = {
         id: gameId,
         players: [
-            { id: player1Id, hp: 5, damage: 1, move: null, setDamage: null },
-            { id: player2Id, hp: 5, damage: 1, move: null, setDamage: null },
+            { id: player1Id, hp: 5, damage: 1, move: null, setDamage: null, isHit: false },
+            { id: player2Id, hp: 5, damage: 1, move: null, setDamage: null, isHit: false },
         ],
         currentTurn: 0,
         turnCount: 0,

@@ -106,6 +106,10 @@ const checkTurnCompletion = (game: FightState) => {
             console.log(`Игрок ${p.id}: движение = ${p.move}, атака = ${p.setDamage}, HP = ${p.hp}`);
         });
 
+        game.players.forEach((p: FighterState) => {
+            p.isHit = false;
+        });
+
         game.players.forEach((player: FighterState) => {
             const opponent = game.players.find((p: FighterState) => p.id !== player.id);
             if (opponent) {
@@ -115,6 +119,7 @@ const checkTurnCompletion = (game: FightState) => {
                         `попал по игроку ${opponent.id} (движение: ${opponent.move}). Наносит урон: ${player.damage}`
                     );
                     opponent.hp -= player.damage;
+                    opponent.isHit = true;
                 } else {
                     console.log(
                         `Промах: игрок ${player.id} (атака: ${player.setDamage}) ` +

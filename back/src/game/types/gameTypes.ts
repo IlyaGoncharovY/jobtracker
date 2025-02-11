@@ -18,6 +18,7 @@ export type PunchOrMoveType = 'move' | 'punch';
  * @param {number} props.damage - Урон, который может нанести игрок.
  * @param {DirectionType | null} props.move - Направление движения игрока.
  * @param {DirectionType | null} props.setDamage - Направление атаки игрока.
+ * @param {boolean} props.isHit - попал ли противник по пользователю.
  */
 export interface FighterState {
     id: string;
@@ -25,6 +26,7 @@ export interface FighterState {
     damage: number;
     move: DirectionType | null;
     setDamage: DirectionType | null;
+    isHit: boolean
 }
 
 /**
