@@ -14,6 +14,7 @@ export const Header = () => {
     <div className={s.headerContainer}>
       <span>
         {userTG?.username ? userTG?.username : 'Пользователь'}
+        {userTG?.username}
       </span>
       <IconButton
         color="primary"
