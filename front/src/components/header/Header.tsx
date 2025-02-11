@@ -14,9 +14,6 @@ export const Header = () => {
     <div className={s.headerContainer}>
       <span>
         {userTG?.username ? userTG?.username : 'Пользователь'}
-        <h1>
-          {userTG?.username}
-        </h1>
       </span>
       <IconButton
         color="primary"
