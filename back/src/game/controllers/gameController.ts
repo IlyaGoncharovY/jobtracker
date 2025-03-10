@@ -1,6 +1,6 @@
 import { getGameById, updateGame, createGame, activeGames } from '../models/gameModel';
 import { WebSocket } from 'ws';
-import {AttackActionType, FighterState, FightState, MoveActionType} from "../types/gameTypes";
+import {AttackActionType, ChatMessageType, FighterState, FightState, MoveActionType} from "../types/gameTypes";
 
 /**
  * Мапа для хранения WebSocket-соединений игроков.
@@ -118,9 +118,12 @@ const checkTurnCompletion = (game: FightState) => {
                         `Успешный удар: игрок ${player.id} (атака: ${player.setDamage}) ` +
                         `попал по игроку ${opponent.id} (движение: ${opponent.move}). Наносит урон: ${player.damage}`
                     );
+                    const logMessage = `🎯 Player ${player.id} hit by ${opponent.id}!`;
+                    game.log.push(logMessage);
                     opponent.hp -= player.damage;
                     opponent.isHit = true;
                 } else {
+                    game.log.push(`❌ Player ${player.id} missed the target ${opponent.id}.`);
                     console.log(
                         `Промах: игрок ${player.id} (атака: ${player.setDamage}) ` +
                         `не совпадает с движением противника ${opponent.id} (движение: ${opponent.move})`
@@ -165,6 +168,21 @@ const checkTurnCompletion = (game: FightState) => {
 };
 
 /**
+ * Отправляет сообщение в чат всем игрокам.
+ *
+ * @param {ChatMessageType} data - Состояние для чата.
+ */
+export const handleChatMessage = (data: ChatMessageType) => {
+    const game = getGameById(data.gameId);
+    if (!game) return;
+
+    const chatMessage = `💬 ${data.playerId}: ${data.message}`;
+    game.log.push(chatMessage);
+    updateGame(data.gameId, game);
+    sendGameState(game);
+};
+
+/**
  * Отправляет обновлённое состояние игры всем подключённым игрокам.
  *
  * @param {FightState} game - Состояние игры.
@@ -179,7 +197,8 @@ const sendGameState = (game: FightState) => {
                 result: game.result,
                 turnCount: game.turnCount,
                 player,
-                opponent: game.players.find((p: FighterState) => p.id !== player.id) || null
+                opponent: game.players.find((p: FighterState) => p.id !== player.id) || null,
+                log: game.log,
             }));
         }
     });
