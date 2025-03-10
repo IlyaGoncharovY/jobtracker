@@ -26,6 +26,7 @@ export const createGame = (player1Id: string, player2Id: string): FightState => 
         turnCount: 0,
         maxTurns: 15,
         gameOver: false,
+        log: [],
     };
 
     activeGames[newGame.id] = newGame;

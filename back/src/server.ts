@@ -1,7 +1,7 @@
 import { WebSocketServer } from 'ws';
 import http from "http";
 import app from "./app";
-import { handlePlayerConnect, makeMove, makePunch } from "./game/controllers/gameController";
+import {handleChatMessage, handlePlayerConnect, makeMove, makePunch} from "./game/controllers/gameController";
 
 const PORT = process.env.PORT || 8000;
 
@@ -29,6 +29,9 @@ wss.on("connection", (ws) => {
                     break;
                 case "punch":
                     makePunch(ws, data);
+                    break;
+                case "chat":
+                    handleChatMessage(data);
                     break;
                 default:
                     console.warn("Неизвестный тип сообщения:", data.type);

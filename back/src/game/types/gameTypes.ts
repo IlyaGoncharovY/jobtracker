@@ -38,6 +38,7 @@ export interface FighterState {
  * @param {number} props.turnCount - Количество завершённых ходов.
  * @param {number} props.maxTurns - Максимальное количество ходов.
  * @param {boolean} props.gameOver - Флаг завершения игры.
+ * @param {string[]} props.log - массив логов для чата игры.
  * @param {string} props.[result] - Результат игры (например, "Победил: ..." или "Ничья").
  */
 export interface FightState {
@@ -47,6 +48,7 @@ export interface FightState {
     turnCount: number;
     maxTurns: number;
     gameOver: boolean;
+    log: string[];
     result?: string;
 }
 
@@ -78,4 +80,17 @@ export interface MoveActionType {
     gameId: string
     playerId: string
     type: PunchOrMoveType
+}
+
+/**
+ * Тип действия чат для пользователей.
+ * @param {ChatMessageType} props - props для действия "чат".
+ * @param {string} props.gameId - Идентификатор игры.
+ * @param {string} props.playerId - Идентификатор игрока.
+ * @param {string} props.message - Передаваемое сообщение.
+ */
+export interface ChatMessageType {
+    gameId: string
+    playerId: string
+    message: string
 }
